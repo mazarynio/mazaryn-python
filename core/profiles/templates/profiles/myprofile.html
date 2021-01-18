@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+my profile 
+
+{% endblock title %}
+
+{% block content %}
+
+
+<!--MODAL-->
+<div class="ui modal" id="modal-popup" style="height: 200px; margin-top: 4px;">
+  <i class="close icon"></i>
+  <div class="header">
+    Update your profile
+  </div>
+  <div class="image content">
+    <div class="ui medium image">
+      <img src="{{profile.avatar.url}}">
+    </div>
+    <div class="description">
+      <div class="ui header">Update some new additional info about yourself.</div>
+    <form action="" method="POST" class='ui form' enctype='multipart/form-data' > 
+        {% csrf_token %}
+        {{form.as_p}}
+    </div>
+  </div>
+  <div class="actions">
+    <button type='submit' class="ui positive right labeled icon button">
+      Update
+      <i class="checkmark icon"></i>
+    </button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+{% if update_flag %}
+<div class="ui green message"> Updated your profile succesfully!</div>
+{% endif %}
+<h3>My profile : {{request.user}}</h3>
+
+
+<div class="ui equal width grid">
+    <div class="column">
+      <img class="ui medium rounded image" src={{profile.avatar.url}}>
+      <div class="row">
+        <br>
+        <button class = 'ui secondary button' id='profile-btn'>Update your profile</button>
+      </div>
+    </div>
+    <div class="column">
+      <table class="ui table">
+        <tbody>
+          <tr>
+            <td> Username </td>
+            <td> {{profile.user}} </td> 
+          </tr>
+          <tr>
+            <td> First name </td>
+            <td> {{profile.first_name}} </td> 
+          </tr>
+          <tr>
+            <td> Last name </td>
+            <td> {{profile.last_name}} </td> 
+          </tr>
+          <tr>
+            <td> Bio </td>
+            <td> {{profile.bio}} </td> 
+          </tr>
+          <tr>
+            <td> Country </td>
+            <td> {{profile.country}} </td> 
+          </tr>
+          <tr>
+            <td> Number of friends </td>
+            <td> {{profile.get_friends_no}}
+          </tr>
+          <tr>
+            <td> Number of posts </td>
+            <td> {{profile.get_posts_no}} </td> 
+          </tr>
+          <tr>
+            <td> Number of likes given </td>
+            <td> {{profile.get_no_of_likes_given}} </td> 
+          </tr>
+          <tr>
+            <td> Number of likes received </td>
+            <td> {{profile.get_no_of_likes_received}} </td> 
+          </tr>
+          <tr>
+            <td> Authors posts </td>
+            <td> {{profile.get_all_author_posts}} </td> 
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+</div>
+
+
+
+
+<script> $(document).ready(function(){
+  $('#profile-btn').click(function(){
+      $('#modal-popup').modal('show');
+  });
+  $(".modal-popup").modal({
+    closable: true
+  });
+});
+</script>
+
+{% endblock content %}
