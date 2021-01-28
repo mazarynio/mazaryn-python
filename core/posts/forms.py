@@ -1,8 +1,9 @@
 from django import forms
 from .models import Post,Comment
 
+
 class PostModelForm(forms.ModelForm):
-    #content = forms.CharField(widget=forms.TextInput(attrs={'row': 4}))
+    content = forms.CharField(widget=forms.TextInput(attrs={'row': 4}))
     class Meta:
         model = Post
         fields = ('content','image')

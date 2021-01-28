@@ -5,9 +5,13 @@ from django.views.generic import UpdateView,DeleteView
 from django.urls import reverse_lazy
 from .models import Post,Like
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
+
+@login_required
 def post_comment_create_and_list_view(request):
     all_posts = Post.objects.all()
     profile = Profile.objects.get(user=request.user)
@@ -51,6 +55,8 @@ def post_comment_create_and_list_view(request):
     }
     return render(request, 'posts/main.html',context)
 
+
+@login_required
 def like_unlike_post(request):
     user = request.user
 
@@ -83,7 +89,7 @@ def like_unlike_post(request):
     
     return redirect('posts:main-view')   
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostModelForm
     template_name = 'posts/post-update.html'
@@ -100,7 +106,7 @@ class PostUpdateView(UpdateView):
             
     
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'posts/post-delete.html'
     success_url = reverse_lazy('posts:main-view')

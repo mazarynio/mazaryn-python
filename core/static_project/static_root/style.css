@@ -13,6 +13,14 @@ body {
     margin-bottom: 7px;
 }
 
+
+.modal-popup {
+    height: 300px !important;
+    top : 200px !important;
+    font-size: 20px !important;
+    margin-top: 6px;
+}
+
 .bwhite-lg{
     background-color: transparent !important;
     width: 10px !important;
@@ -21,13 +29,8 @@ body {
 .bwhite-sm{
     background-color: transparent !important;
     width: 10px !important;
+}
 
-
-
-
-.modal-popup {
-    height: 300px !important;
-    top : 200px !important;
-    font-size: 20px !important;
-    margin-top: 6px;
+.comment-box{
+    display: none;
 }

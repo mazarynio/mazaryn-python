@@ -4,7 +4,33 @@ from .utils import get_random_code
 from django.template.defaultfilters import slugify
 from django.utils import timezone
 from posts.models import Comment,Post,Like
-from .managers import RelationshipManager, ProfileManager
+from django.db.models import Q
+from django.shortcuts import reverse, redirect
+#from .managers import RelationshipManager
+#import profiles.models as a
+
+
+class ProfileManager(models.Manager):
+    
+    def get_all_profiles(self, myself):
+        profiles = Profile.objects.all().exclude(user=myself)
+        return profiles
+    
+    def get_all_profiles_to_invite(self, myself):
+        profiles = Profile.objects.all().exclude(user=myself)
+        profile = Profile.objects.get(user=myself)
+        qs = Relationship.objects.filter(Q(sender=profile) | Q(receiver=profile))
+        
+        
+        accepted_invitations = []
+        for relationship in qs:
+            if relationship.status == 'accepted':
+                accepted_invitations.append(relationship.receiver)
+                accepted_invitations.append(relationship.sender)
+                
+        
+        available = [profile for profile in profiles if profile not in accepted_invitations]
+        return available
 
 
 
@@ -25,6 +51,8 @@ class Profile(models.Model):
     
     objects = ProfileManager()
     
+    def absolute_profile_url(self):
+        return reverse('profiles:profile-detail-view', kwargs={"slug": self.slug}) 
     
     def get_friends(self):
         return self.friends.all()
@@ -58,18 +86,43 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username}"
 
+    ###########################################################
+    #Each time the model is saved the slug was being generated making that a big issue
+    intial_first_name = None
+    intial_last_name = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.intial_first_name = self.first_name
+        self.intial_last_name = self.last_name 
+    #########################################################
+
     def save(self, *args,**kwargs):
         ex = False
-        if self.first_name and self.last_name:
-            to_slug = slugify(str(self.first_name)+ '_' + str(self.last_name))
-            ex = Profile.objects.filter(slug=to_slug).exists()
-            while ex:
-                to_slug = slugify(to_slug + '-' + str(get_random_code()))
+        to_slug = self.slug
+        if self.first_name != self.intial_first_name or self.last_name != self.intial_last_name or self.slug =="":
+            if self.first_name and self.last_name:
+                to_slug = slugify(str(self.first_name)+ '_' + str(self.last_name))
                 ex = Profile.objects.filter(slug=to_slug).exists()
-        else:
-            to_slug = str(self.user)
+                while ex:
+                    to_slug = slugify(to_slug + '-' + str(get_random_code()))
+                    ex = Profile.objects.filter(slug=to_slug).exists()
+            else:
+                to_slug = str(self.user)
         self.slug = to_slug
         super().save(*args,**kwargs )
+
+
+
+
+class RelationshipManager(models.Manager):
+    """ This class mimics the functionality of object manager i.e Relationship.objects.filter() --->>
+    Relationship.objects.invitations_received()"""
+    
+    def invitations_received(self, receiver):
+        rlnshp_query_set = Relationship.objects.filter(receiver=receiver, status='send')
+        return rlnshp_query_set
+
 
 
 STATUS_CHOICES = [ 
@@ -89,5 +142,6 @@ class Relationship(models.Model):
 
     def __str__(self):
         return f"{self.sender} - {self.receiver} - {self.status} was initiated {self.created.strftime('%d-%m-%y')}"
+
 
 

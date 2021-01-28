@@ -22,9 +22,10 @@ from profiles.views import my_profile_view
 
 
 urlpatterns = [
+    path('', home_view, name='home-view'),
+    path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
-    path('',home_view),
-    path('myprofile/',include('profiles.urls', namespace='profiles')),
+    path('profiles/',include('profiles.urls', namespace="profiles")),
     path('posts/',include('posts.urls',namespace='posts'))
       
 ]
