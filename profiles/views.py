@@ -1,9 +1,9 @@
-from profiles.models import Profile, Relationship
+from .models import Profile, Relationship
 from .serializers import ProfileSerializer
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions
 
 
 class MyProfileView(APIView):
