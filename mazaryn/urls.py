@@ -9,8 +9,6 @@ from rest_framework.authtoken import views  # for testing purposes
 
 
 urlpatterns = [
-    path("", home_view, name="home-view"),
-    path("accounts/", include("allauth.urls")),
     path("admin/", admin.site.urls),
     path("profiles/", include("profiles.urls")),
     path("posts/", include("posts.urls")),

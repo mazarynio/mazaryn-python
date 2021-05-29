@@ -1,6 +1,5 @@
 from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
-from .permissions import PostAccessPolicy, PostEditPermission
 
 
 from rest_framework.viewsets import ModelViewSet
@@ -22,7 +21,7 @@ class PostViewSet(ModelViewSet):
     #     post = queryset.get(id=self.request)
     #     return super().get_object()
 
-    @action(detail=True, methods=["GET"], permission_classes=[PostEditPermission])
+    @action(detail=True, methods=["GET"],)
     def comments(self, request, id=None):
         post = self.get_object()
         comments = Comment.objects.filter(post=post)

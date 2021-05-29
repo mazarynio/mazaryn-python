@@ -44,9 +44,6 @@ INSTALLED_APPS = [
     'groups',
 
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -66,8 +63,6 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000"
 ]
-
-SITE_ID = 1
 
 ROOT_URLCONF = 'mazaryn.urls'
 
