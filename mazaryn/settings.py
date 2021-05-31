@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'posts',
     'groups',
 
-    'django.contrib.sites',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -66,6 +65,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 ROOT_URLCONF = 'mazaryn.urls'
+
+AUTH_USER_MODEL = 'accounts.Account'
+
 
 LOGIN_REDIRECT_URL = '/posts/'
 #LOGIN_URL = '/admin/'
