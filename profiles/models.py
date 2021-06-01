@@ -3,8 +3,8 @@ from django.template.defaultfilters import slugify
 from django.shortcuts import reverse
 from django.db.models import Q
 from django.db import models
-from .utils import get_random_code
 from groups.models import Group
+import profiles
 
 
 class ProfileManager(models.Manager):
@@ -97,7 +97,8 @@ class Profile(models.Model):
                                   '_' + str(self.last_name))
                 ex = Profile.objects.filter(slug=to_slug).exists()
                 while ex:
-                    to_slug = slugify(to_slug + '-' + str(get_random_code()))
+                    to_slug = slugify(
+                        to_slug + '-' + str(profiles.get_random_code()))
                     ex = Profile.objects.filter(slug=to_slug).exists()
             else:
                 to_slug = str(self.user)
