@@ -12,7 +12,6 @@ class Group(models.Model):
     created_by = models.ForeignKey(
         "profiles.Profile", on_delete=models.SET_NULL, null=True, related_name='group_creator')
     created = models.DateTimeField(auto_now=True)
-    updated = models.DateTimeField(auto_now_add=True)
 
     def get_members(self):
         return self.members.all()
