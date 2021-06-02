@@ -29,10 +29,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('-created',),
-            },
-        ),
-        migrations.CreateModel(
-            name='Like',
+       
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('value', models.CharField(blank=True, choices=[('Like', 'Like'), ('Unlike', 'Unlike')], max_length=8)),

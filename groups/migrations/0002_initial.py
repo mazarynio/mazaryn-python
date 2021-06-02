@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
         ('posts', '0001_initial'),
         ('profiles', '0001_initial'),
         ('groups', '0001_initial'),
+
     ]
 
     operations = [
