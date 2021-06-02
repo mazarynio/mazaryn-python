@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'posts',
     'groups',
 
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -96,7 +96,6 @@ TEMPLATES = [
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend'
 ]
 
 
