@@ -16,6 +16,6 @@ Mazaryn
 > 5. channels
 > 6. channels-redis
 
->> Open terminal/command prompt and run:
->> - `python manage.py migrate`
->> - `python manage.py createsuperuser`
+>Open terminal/command prompt and run:
+> - `python manage.py migrate`
+> - `python manage.py createsuperuser`
