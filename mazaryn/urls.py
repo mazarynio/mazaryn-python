@@ -9,6 +9,7 @@ from rest_framework.authtoken import views  # for testing purposes
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('chat/', include('communications.urls')),
     path("", include("profiles.urls")),
     path("posts/", include("posts.urls")),
     path("groups/", include("groups.urls")),

@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    'communications',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +45,7 @@ INSTALLED_APPS = [
     'profiles',
     'posts',
     'groups',
-
+    'notifications',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -102,6 +104,18 @@ AUTHENTICATION_BACKENDS = [
 
 
 WSGI_APPLICATION = 'mazaryn.wsgi.application'
+
+ASGI_APPLICATION = 'mazaryn.asgi.application'
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

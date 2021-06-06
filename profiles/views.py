@@ -1,5 +1,12 @@
+import json
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+from django.http import JsonResponse
 from django.contrib.auth import authenticate
-from rest_framework import serializers
+from django.contrib.auth.models import User
+
+from notifications.serializers import NotificationSerializer
+from notifications.models import CustomNotification
 
 from .models import Profile, Relationship
 from .utils import validate_email
@@ -11,7 +18,7 @@ from rest_framework.response import Response
 from rest_framework.generics import UpdateAPIView
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics, mixins, permissions
+from rest_framework import generics, mixins
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 
@@ -19,7 +26,7 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 # Register
 # URL: https://<your-domain>/register/
 # @permission_classes([permissions.AllowAny, ])
-@api_view(['POST', 'GET'])
+@api_view(['POST',])
 def registration_view(request):
     data = {}
     email = request.data.get('email', '0').lower()
@@ -93,6 +100,47 @@ def does_account_exist_view(request):
     except Profile.DoesNotExist:
         data['response'] = "Profile does not exist"
     return Response(data)
+
+@api_view(['POST', ])
+@permission_classes([])
+@authentication_classes([])
+def send_friend_request(request, slug=None):
+    if slug is not None:
+        friend_user = Profile.objects.get(slug=slug)
+        relationship = Relationship.objects.create(sender=request.user, receiver=friend_user, status='send')
+        relationship.save()
+        notification = CustomNotification.objects.create(type="friend", actor= request.user, recipient= friend_user, verb="Sent you friend request" )
+        channel_layer = get_channel_layer()
+        channel = "notifications_{}".format(friend_user.username)
+        async_to_sync(channel_layer.group_send)(
+            channel, {
+                "type": "notify", #method name
+                "command": "new_notification",
+                "notification": json.dumps(NotificationSerializer(notification).data)
+            }
+        )
+        data = {
+            'status': True,
+            'message': "Request sent"
+        }
+        return JsonResponse(data)
+    
+    
+@api_view(['POST', ])
+@permission_classes([])
+@authentication_classes([])
+def accept_friend_request(request, slug= None):
+    if slug is not None:
+        friend_user = Profile.objects.get(slug=slug)
+        myself = request.user
+        relationship = Relationship.objects.create(sender=slug, receiver=request.user, status="accepted")
+        relationship.save()
+        CustomNotification.objects.filter(recipient=myself, actor= friend_user).delete()
+        data = {
+            'status': True,
+            'message': "You accepted friend request"
+        }
+        return JsonResponse(data)
 
 
 class MyProfileView(APIView):
@@ -189,9 +237,17 @@ class InvitesProfileList(generics.GenericAPIView, mixins.ListModelMixin):
         return self.list(request)
 
 
+class FriendsListView(generics.GenericAPIView, mixins.ListModelMixin):
+    serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        current_friends = self.request.user.friends.all()
+               
+        return current_friends
+    
+    
 class ProfileListView(
-    generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin
-):
+    generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
     serializer_class = ProfileSerializer
 
     def get_queryset(self):

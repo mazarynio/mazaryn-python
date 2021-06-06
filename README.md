@@ -1,15 +1,21 @@
-# Project's Title
+## Project's Title
 
 Mazaryn
 
-# Description
+## Description
 
-Distributed Social Network that allows users interact with each other as well as offering a social market place platform.
+> Distributed Social Network that allows users interact with each other as well as offering a social market place platform.
 
-# Prerequsites
+## Prerequsites
 
-The following depenencies need to be installed for smooth running 
-1. django
-2. pillow 
-3. django rest framework 
-4. django-cors-headers
+> The following depenencies need to be installed for smooth running 
+> 1. django
+> 2. pillow 
+> 3. django restframework 
+> 4. django-cors-headers
+> 5. channels
+> 6. channels-redis
+
+>> Open terminal/command prompt and run:
+>> - `python manage.py migrate`
+>> - `python manage.py createsuperuser`

@@ -4,8 +4,7 @@ from posts.models import Post, Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
-    post = id = serializers.IntegerField(required=False)
-
+    
     class Meta:
         model = Comment
         fields = [
@@ -18,7 +17,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True)
+    comments = CommentSerializer(many=True, required=False)
     image = serializers.ImageField(required=False)
 
     class Meta:
@@ -36,7 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         comments = validated_data.pop('comments')
-        question = Post.objects.create(**validated_data)
+        post = Post.objects.create(**validated_data)
         for comment in comments:
-            Comment.objects.create(**comment, question=question)
-        return question
+            Comment.objects.create(**comment, post=post)
+        return post
