@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.db import models
 from groups.models import Group
 import profiles
+import os
 
 
 class ProfileManager(models.Manager):
@@ -28,6 +29,11 @@ class ProfileManager(models.Manager):
             profile for profile in profiles if profile not in accepted_invitations]
         return available
 
+def upload_avatar(instance, filename):
+        path = 'avatars'
+        ext = filename.split('.')[-1]
+        filename = '{}.{}'.format(instance.user.username, ext)
+        return os.path.join(path, filename)
 
 class Profile(models.Model):
     '''Returns more details about a registered user, it extends the default **User model '''
@@ -37,7 +43,7 @@ class Profile(models.Model):
     bio = models.TextField(default='No bio...', max_length=300, blank=True)
     email = models.EmailField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
-    avatar = models.ImageField(default='avatar.png', upload_to='avatars/')
+    avatar = models.ImageField(default='avatar.png', upload_to=upload_avatar)
     friends = models.ManyToManyField(User, blank=True, related_name='friends')
     groups = models.ManyToManyField(Group, blank=True)
 
