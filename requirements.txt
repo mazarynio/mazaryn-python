@@ -1,7 +1,32 @@
-asgiref==3.3.4
-Django==3.2.3
-django-cors-headers==3.7.0
-djangorestframework==3.12.4
-Pillow==8.2.0
-pytz==2021.1
-sqlparse==0.4.1
+Package             Version
+------------------- -------
+asgiref             3.3.4  
+attrs               21.2.0 
+autobahn            21.3.1 
+Automat             20.2.0 
+cffi                1.14.5 
+channels            3.0.3  
+constantly          15.1.0 
+cryptography        3.4.7  
+daphne              3.0.2  
+Django              3.2.3  
+django-cors-headers 3.7.0  
+djangorestframework 3.12.4 
+hyperlink           21.0.0 
+idna                3.2    
+incremental         21.3.0 
+Pillow              8.2.0  
+pip                 20.0.2 
+pkg-resources       0.0.0  
+pyasn1              0.4.8  
+pyasn1-modules      0.2.8  
+pycparser           2.20   
+pyOpenSSL           20.0.1 
+pytz                2021.1 
+service-identity    21.1.0 
+setuptools          44.0.0 
+six                 1.16.0 
+sqlparse            0.4.1  
+Twisted             21.2.0 
+txaio               21.2.1 
+zope.interface      5.4.0  
