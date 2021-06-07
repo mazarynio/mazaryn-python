@@ -12,9 +12,10 @@ from rest_framework.decorators import action, api_view
 
 
 def all_messages(request):
-    profile = Profile.objects.get(user=request.user)
-    # friends = Relationship.objects.filter(Q(sender=profile) | Q(receiver=profile), status='accepted')
-    pass
+     profile = Profile.objects.get(user=request.user)
+     friends = Relationship.objects.filter(Q(sender=profile) | Q(receiver=profile), status='accepted')
+     serializer = RoomSerializer(friends, many=True)
+     return JsonResponse(serializer.data, safe=False)
     
 
 
