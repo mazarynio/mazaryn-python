@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from profiles.models import Profile, Relationship
+from rest_framework.utils import field_mapping
+from profiles.models import Profile, Follow, Relationship
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -36,6 +37,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ["id", "first_name", "last_name", "bio", "email", "avatar"]
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Follow
+        fields = ["id", "follower", "followee"]
 
 
 class ChangePasswordSerializer(serializers.Serializer):

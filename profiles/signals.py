@@ -6,10 +6,6 @@ from .models import Profile, Relationship
 
 from rest_framework.authtoken.models import Token
 
-# This adds the tokens for the pre-existing users before the token authentication was implemented,-Subject to deprecation.
-# for profile in Profile.objects.all():
-#     Token.objects.get_or_create(profile=profile)
-
 
 @receiver(post_save, sender=User)
 def post_save_create_profile(sender, instance, created, **kwargs):

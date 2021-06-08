@@ -6,6 +6,8 @@ from django.db import models
 from groups.models import Group
 import profiles
 import os
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 class ProfileManager(models.Manager):
@@ -29,11 +31,13 @@ class ProfileManager(models.Manager):
             profile for profile in profiles if profile not in accepted_invitations]
         return available
 
+
 def upload_avatar(instance, filename):
-        path = 'avatars'
-        ext = filename.split('.')[-1]
-        filename = '{}.{}'.format(instance.user.username, ext)
-        return os.path.join(path, filename)
+    path = 'avatars'
+    ext = filename.split('.')[-1]
+    filename = '{}.{}'.format(instance.user.username, ext)
+    return os.path.join(path, filename)
+
 
 class Profile(models.Model):
     '''Returns more details about a registered user, it extends the default **User model '''
@@ -139,3 +143,75 @@ class Relationship(models.Model):
 
     def __str__(self):
         return f"{self.sender} - {self.receiver} - {self.status} was initiated {self.created.strftime('%d-%m-%y')}"
+
+
+class FollowManager(models.Manager):
+    '''Following manager'''
+
+    def followers(self, user):
+        '''Returns list of all followers'''
+        qs = Follow.objects.filter(followee=user).all()
+        followers = [p.follower for p in qs]
+
+        return followers
+
+    def following(self, user):
+        '''Return a list of all users the given user follows '''
+        qs = Follow.objects.filter(follower=user).all()
+        following = [p.followee for p in qs]
+
+        return following
+
+    def add_follower(self, follower, followee):
+        """Create's 'follower' follows 'followee' relationship"""
+        if follower == followee:
+            raise ValidationError('You cannot follow yourself')
+
+        status, created = Follow.objects.get_or_create(
+            follower=follower, followee=followee)
+
+        if created is False:
+            raise ValidationError(f"{follower} already follows {followee}")
+
+        return status
+
+    def remove_follower(self, follower, followee):
+        """ Remove 'follower' follows 'followee' relationship """
+        try:
+            status = Follow.objects.get(follower=follower, followee=followee)
+            status.delete()
+
+        except Follow.DoesNotExist:
+            raise ValidationError('This relationship does not exist')
+
+    def follows(self, follower, followee):
+        """ Does follower follow followee?"""
+        if followers and followee in followers:
+            return True
+
+        elif following and follower in following:
+            return True
+
+        else:
+            return Follow.objects.filter(follower=follower, followee=followee).exists()
+
+
+class Follow(models.Model):
+    """Model to represent Following relationships"""
+
+    follower = models.ForeignKey(
+        User, models.CASCADE, related_name='following')
+    followee = models.ForeignKey(
+        User, models.CASCADE, related_name='followers')
+    created = models.DateTimeField(default=timezone.now)
+
+    objects = FollowManager()
+
+    def __str__(self):
+        return f"{self.follower} follows {self.followee}"
+
+    def save(self, *args, **kwargs):
+        # Ensures users can't be friends with themselves
+        if self.follower == self.followee:
+            raise ValidationError('You cannot follow yourself')
+        super().save(*args, **kwargs)
