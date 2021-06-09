@@ -27,7 +27,7 @@ SECRET_KEY = 'awj0#6@igg6q@!g=cxr$*opbjjs&bbe&t1s65t$y_+t=)k46-!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,7 +87,7 @@ if DEBUG:
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-       # os.path.join(BASE_DIR, 'templates')
+        # os.path.join(BASE_DIR, 'templates')
         'DIRS': [
             Path(BASE_DIR, 'templates')
         ],
@@ -168,9 +169,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static_project')
-]
 
 STATIC_URL = '/static/'
 
