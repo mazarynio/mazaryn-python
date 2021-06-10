@@ -76,8 +76,6 @@ CORS_ALLOWED_ORIGINS = [
 ROOT_URLCONF = 'mazaryn.urls'
 
 
-LOGIN_REDIRECT_URL = '/posts/'
-#ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_UNIQUE = True
 
@@ -88,7 +86,6 @@ if DEBUG:
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # os.path.join(BASE_DIR, 'templates')
         'DIRS': [
             Path(BASE_DIR, 'templates')
         ],
@@ -104,9 +101,9 @@ TEMPLATES = [
     },
 ]
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 
 
 WSGI_APPLICATION = 'mazaryn.wsgi.application'
@@ -183,10 +180,10 @@ MEDIA_ROOT = Path(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.TokenAuthentication',
+            'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly']
 }

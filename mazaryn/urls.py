@@ -16,9 +16,9 @@ urlpatterns = [
     path("groups/", include("groups.urls")),
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.authtoken')),
-    url(r'^auth/', include('djoser.urls.jwt')),
-    path("token/", views.obtain_auth_token),  # for testing purposes
-    path("api-auth/", include("rest_framework.urls")),  # for testing purposes
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # url(r'^auth/', include('djoser.urls.jwt')),
+    # path("token/", views.obtain_auth_token),  # for testing purposes
+    # path("api-auth/", include("rest_framework.urls")),  # for testing purposes
+] + static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
