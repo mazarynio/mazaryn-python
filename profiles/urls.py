@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (  # ReceivedInvitesList, ProfileListView, MyProfileView, InvitesProfileList,
     # registration_view, LoginView, update_profile_view, does_account_exist_view, ChangePasswordView,
     FriendsListView, send_friend_request, accept_friend_request, follower_add, follower_remove, FollowersListView,
-    FollowingListView)
+    FollowingListView, BlockingListView, BlockedListView, block_add, block_remove )
 
 urlpatterns = [
     #     path('check_if_account_exists/', does_account_exist_view,
@@ -25,6 +25,12 @@ urlpatterns = [
     path('all_profiles/follower_add/', follower_add, name='add_follower'),
     path('all_profiles/follower_remove/',
          follower_remove, name='remove_follower'),
+    path('myprofile/blocked/', BlockedListView.as_view(), name='blocked'),
+    path('myprofile/blocking/', BlockingListView.as_view(), name='blocking'),
+    path('myprofile/blocking/block/', block_add, name='block_add'),
+    path('myprofile/blocked/unblock/',
+         block_remove, name='remove_block'),
+    
 
 
 ]

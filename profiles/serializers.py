@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from rest_framework.utils import field_mapping
-from profiles.models import Profile, Follow, Relationship
+from profiles.models import Block, Profile, Follow, Relationship
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -43,6 +42,12 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
         fields = ["id", "follower", "followee"]
+        
+
+class BlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Block
+        fields = ["id", "blocker", "blocked"]
 
 
 class ChangePasswordSerializer(serializers.Serializer):

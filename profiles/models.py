@@ -215,3 +215,62 @@ class Follow(models.Model):
         if self.follower == self.followee:
             raise ValidationError('You cannot follow yourself')
         super().save(*args, **kwargs)
+        
+        
+class BlockManager(models.Manager):
+    """ Blocking manager """
+
+    def blocked(self, user):
+        """ Return a list of all blocked  """
+        qs = Block.objects.filter(blocked=user).all()
+        blocked = [u.blocked for u in qs]
+        return blocked
+
+    def blocking(self, user):
+        """ Return a list of all users the given user could blocks """
+        qs = Block.objects.filter(blocker=user).all()
+        blocking = [u.blocked for u in qs]
+        return blocking
+
+    def add_block(self, blocker, blocked):
+        """ Create 'blocker' blocks 'blocked' relationship """
+        if blocker == blocked:
+            raise ValidationError("Users cannot block themselves")
+
+        relation, created = Block.objects.get_or_create(
+            blocker=blocker, blocked=blocked
+        )
+
+        if created is False:
+            raise ValidationError(
+                f"{self.blocker} has already blocked {self.blocked}"
+            )
+
+        return relation
+
+    def remove_block(self, blocker, blocked):
+        """ Remove 'blocker' blocks 'blocked' relationship """
+        try:
+            rel = Block.objects.get(blocker=blocker, blocked=blocked)
+            rel.delete()
+            return True
+        except Block.DoesNotExist:
+            return False
+
+class Block(models.Model):
+    '''Model representing blocking relationships'''
+    blocker = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blocking')
+    blocked = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='blockees')
+    created = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return f"{self.blocker} has blocked {self.blocked}."
+
+    def save(self, *args, **kwargs):
+        # Ensures users can't block themselves
+        if self.blocker == self.blocked:
+            raise ValidationError('You cannot block yourself!')
+        super().save(*args, **kwargs)
+    
+    
+    

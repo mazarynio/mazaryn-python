@@ -8,9 +8,9 @@ from django.shortcuts import get_object_or_404
 from notifications.serializers import NotificationSerializer
 from notifications.models import CustomNotification
 
-from .models import Profile, Relationship, Follow
+from .models import Profile, Relationship, Follow, Block
 from .utils import validate_email
-from .serializers import FollowSerializer, RegistrationSerializer, ProfileSerializer, ChangePasswordSerializer
+from .serializers import BlockSerializer, FollowSerializer, RegistrationSerializer, ProfileSerializer, ChangePasswordSerializer
 
 from rest_framework import status
 from rest_framework.views import APIView
@@ -306,3 +306,40 @@ def follower_remove(request, followee_username):
     follower = request.user
     follow_status = Follow.objects.remove_follower(follower, followee)
     follow_status.save()
+
+class BlockedListView(generics.GenericAPIView, mixins.ListModelMixin):
+    '''List this user's blocklist'''
+    serializer_class = BlockSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        blocked = Block.objects.blocked(user)
+
+        return blocked
+
+class BlockingListView(generics.GenericAPIView, mixins.ListModelMixin):
+    '''Lists who this current user can block'''
+    serializer_class = BlockSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        blocking = Block.objects.blocking(user)
+        return blocking
+
+
+@api_view(['POST', ])
+def block_add(request, blockee_username):
+    '''Create a blocking relationship relationship'''
+    blockee = Profile.objects.get(username=blockee_username)
+    blocker = request.user
+    blocking = Block.objects.add_block(blockee, blocker)
+    blocking.save()
+
+@api_view(['POST', ])
+def block_remove(request, blockee_username):
+    '''Removing a blocking relationship relationship'''
+    blockee = Profile.objects.get(username=blockee_username)
+    blocker = request.user
+    blocking = Block.objects.remove_block(blockee, blocker)
+    blocking.save()
+
