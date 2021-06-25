@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from profiles.models import Block, Profile, Follow, Relationship
+from profiles.models import Profile
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -38,26 +38,8 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ["id", "first_name", "last_name", "bio", "email", "avatar"]
 
 
-class FollowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Follow
-        fields = ["id", "follower", "followee"]
-        
-
-class BlockSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Block
-        fields = ["id", "blocker", "blocked"]
-
-
 class ChangePasswordSerializer(serializers.Serializer):
 
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
     confirm_new_password = serializers.CharField(required=True)
-
-
-class RelationshipSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Relationship
-        fields = "__all__"

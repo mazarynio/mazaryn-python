@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'corsheaders',
     'profiles',
+    'friends',
     'posts',
     'groups',
     'notifications',
@@ -78,6 +79,7 @@ ROOT_URLCONF = 'mazaryn.urls'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
@@ -179,11 +181,17 @@ MEDIA_ROOT = Path(BASE_DIR, 'media/')
 
 MEDIA_URL = '/media/'
 
+
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.AllowAllUsersModelBackend'
+# ]
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
             'rest_framework.authentication.TokenAuthentication',
-            'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ],
+            'rest_framework.authentication.SessionAuthentication',
+            'rest_framework_simplejwt.authentication.JWTAuthentication',)
+    ,
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly']
 }
