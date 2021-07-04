@@ -1,13 +1,17 @@
 from .serializers import PostSerializer, CommentSerializer
 from .models import Post, Comment
-
-
+import logging
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 
+logger = logging.getLogger(__name__)
+
+
 class PostViewSet(ModelViewSet):
+    logger.info("Retrieving all posts...")
+
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     lookup_field = 'id'
