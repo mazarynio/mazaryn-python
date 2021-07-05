@@ -79,7 +79,6 @@ ROOT_URLCONF = 'mazaryn.urls'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_UNIQUE = True
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
@@ -103,9 +102,6 @@ TEMPLATES = [
     },
 ]
 
-# AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.ModelBackend',
-# ]
 
 
 WSGI_APPLICATION = 'mazaryn.wsgi.application'
@@ -193,14 +189,9 @@ MEDIA_URL = '/media/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',),
+        'rest_framework.authentication.SessionAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly']
-}
-
-SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 DJOSER = {
