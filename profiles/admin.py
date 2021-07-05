@@ -38,6 +38,7 @@ class AdminUser(UserAdmin):
         "first_name",
         "last_name",
         "is_staff",
+        "is_superuser",
     )
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)

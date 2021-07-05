@@ -126,7 +126,7 @@ class Profile(models.Model):
         return total_liked
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user.email}"
 
     intial_first_name = None
     intial_last_name = None
