@@ -5,7 +5,8 @@ from .models import User, Profile
 
 @admin.register(User)
 class AdminUser(UserAdmin):
-    '''Refactored django admin configuration to match up custom User model.'''
+    '''Refactored django admin configuration to match up custom User model.
+    Besides it returns a customized admin dashboard'''
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (

@@ -10,6 +10,8 @@ from friends.models import Relationship
 
 
 class UserManager(BaseUserManager):
+    '''This manager class inherits its core functionality
+    from django's BaseUserManager to extend it to User class'''
     use_in_migrations = True
 
     # Due to the conflicting syntax the naming takes underscore to differentiate them
@@ -42,6 +44,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
+    '''Custom user model for handling details required for Registration, Login.
+    Besides this model sets attributes such as active and superuser statuses.
+    This model defaults email as a required field.'''
     username = None
     email = models.EmailField('email address', unique=True)
     USERNAME_FIELD = 'email'
@@ -51,12 +56,19 @@ class User(AbstractUser):
 
 
 class ProfileManager(models.Manager):
+    '''Extends the profile class default **Objects** manager by appending subsequent methods.'''
 
     def get_all_profiles(self, myself):
+        '''Lists all profiles to the user excluding the logged in user instance from the list.'''
         profiles = Profile.objects.all().exclude(user=myself)
         return profiles
 
     def get_all_profiles_to_invite(self, myself):
+        '''Returns all profiles eligible for relationship to be initiated, the method excludes the following 
+        from the list: 
+        1.Instance of the current user logged in
+        2.Current friends
+        3.Instances where the status of the relationship is **-sent** (awaiting for acceptance)'''
         profiles = Profile.objects.all().exclude(user=myself)
         profile = Profile.objects.get(user=myself)
         qs = Relationship.objects.filter(
@@ -73,6 +85,8 @@ class ProfileManager(models.Manager):
 
 
 def upload_avatar(instance, filename):
+    '''Handles avatar upload.
+    This is function handles the user uploaded avatars '''
     path = 'avatars'
     ext = filename.split('.')[-1]
     filename = '{}.{}'.format(instance.user.username, ext)
@@ -98,18 +112,23 @@ class Profile(models.Model):
     objects = ProfileManager()
 
     def get_friends(self):
+        '''This method queries the database of all friends of the current logged in user.'''
         return self.friends.all()
 
     def get_friends_no(self):
+        '''Returns the number of the friends total.'''
         return self.friends.all().count()
 
     def get_posts_no(self):
+        '''Returns the total number of posts of a user.'''
         return self.posts.all().count()
 
     def get_all_author_posts(self):
+        '''Returns a list of posts of a user.'''
         return self.posts.all()
 
     def get_no_of_likes_given(self):
+        '''Reurns the count of likes of a user.'''
         likes = self.like_set.all()
         total_liked = 0
         for item in likes:
@@ -118,7 +137,7 @@ class Profile(models.Model):
         return total_liked
 
     def get_no_of_likes_received(self):
-        '''Dropped the syntax model_set because of the related name in the model Post.'''
+        '''Returns the count of likes from a user's total posts'''
         posts = self.posts.all()
         total_liked = 0
         for item in posts:
@@ -137,6 +156,11 @@ class Profile(models.Model):
         self.intial_last_name = self.last_name
 
     def save(self, *args, **kwargs):
+        '''This function overides the default save() method available for models.
+        This function generates the slug based on:
+        1. If first and last names are provided then slug will be generated from them.
+        2. Does check on the availability of a slug and ensures that the unique slug is not
+        changed each and everytime the profile is updated.'''
         ex = False
         to_slug = self.slug
         if self.first_name != self.intial_first_name or self.last_name != self.intial_last_name or self.slug == "":
