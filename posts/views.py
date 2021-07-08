@@ -10,20 +10,15 @@ logger = logging.getLogger(__name__)
 
 
 class PostViewSet(ModelViewSet):
+    '''This class leverages on the modelviewset functionality in order to handle the required 
+    posts operations ie. it returns a post, lists queryed posts etc. 
+    Wholesomely, POST,GET,PUT,DELETE http requests.'''
+    
     logger.info("Retrieving all posts...")
 
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     lookup_field = 'id'
-
-    # def get_permissions(self):
-    #     if self.action == 'list':
-    #         permission_classes = [PostEditPermission]
-
-    # def get_object(self):
-    #     queryset = self.filter_queryset(self.get_queryset())
-    #     post = queryset.get(id=self.request)
-    #     return super().get_object()
 
     @action(detail=True, methods=["GET"],)
     def comments(self, request, id=None):

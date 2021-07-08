@@ -3,6 +3,8 @@ from posts.models import Post, Comment
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    '''Posts serializer 'converts'/serializes comments,serving them to and from the database.'''
+    
     id = serializers.IntegerField(required=False)
     
     class Meta:
@@ -17,6 +19,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    '''Posts serializer 'converts'/serializes posts,serving them to and from the database.
+    On http post request, create method which actually saves the data to the database 
+    explicitly handles the comments - comments aren't a field in posts model.'''
+    
     comments = CommentSerializer(many=True, required=False)
     image = serializers.ImageField(required=False)
 
