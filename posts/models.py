@@ -11,7 +11,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts', validators=[
                               FileExtensionValidator(['png', 'jpg', 'gif', 'jpeg'])], blank=True)
     liked = models.ManyToManyField(
-        "profiles.Profile", blank=True, related_name='likes')
+        "profiles.Profile", blank=True, related_name='post_likes')
     groups = models.ForeignKey(
         "groups.Group", blank=True, on_delete=models.SET_NULL, null=True, related_name='group_posts')
     updated = models.DateTimeField(auto_now=True)
@@ -48,7 +48,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     body = models.TextField(max_length=250)
     liked = models.ManyToManyField(
-        "profiles.Profile", blank=True, related_name='likes')
+        "profiles.Profile", blank=True, related_name='comment_likes')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     

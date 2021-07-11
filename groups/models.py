@@ -5,6 +5,8 @@ class Group(models.Model):
     group_name = models.CharField(max_length=200, blank=True)
     description = models.TextField(
         help_text='Describe this group...', max_length=350, blank=True)
+    admin = models.ManyToManyField(
+        "profiles.Profile", blank=True, related_name='group_admin')
     members = models.ManyToManyField(
         "profiles.Profile", blank=True, related_name='members')
     posts = models.ForeignKey(
