@@ -6,15 +6,15 @@ from django.utils import timezone
 
 class RelationshipManager(models.Manager):
     def invitations_received(self, receiver):
-        rlnshp_query_set = Relationship.objects.filter(
+        return Relationship.objects.filter(
             receiver=receiver, status='send')
-        return rlnshp_query_set
 
 
 STATUS_CHOICES = [
     ('send', 'send'),
     ('accepted', 'accepted')
 ]
+
 
 class Relationship(models.Model):
     sender = models.ForeignKey(
@@ -37,16 +37,12 @@ class FollowManager(models.Manager):
     def followers(self, user):
         '''Returns list of all followers'''
         qs = Follow.objects.filter(followee=user).all()
-        followers = [p.follower for p in qs]
-
-        return followers
+        return [p.follower for p in qs]
 
     def following(self, user):
         '''Return a list of all users the given user follows '''
         qs = Follow.objects.filter(follower=user).all()
-        following = [p.followee for p in qs]
-
-        return following
+        return [p.followee for p in qs]
 
     def add_follower(self, follower, followee):
         """Create's 'follower' follows 'followee' relationship"""
@@ -72,10 +68,12 @@ class FollowManager(models.Manager):
 
     def follows(self, follower, followee):
         """ Does follower follow followee?"""
-        if followers and followee in followers:
-            return True
-
-        elif following and follower in following:
+        if (
+            followers
+            and followee in followers
+            or following
+            and follower in following
+        ):
             return True
 
         else:
@@ -101,22 +99,20 @@ class Follow(models.Model):
         if self.follower == self.followee:
             raise ValidationError('You cannot follow yourself')
         super().save(*args, **kwargs)
-        
-        
+
+
 class BlockManager(models.Manager):
     """ Blocking manager """
 
     def blocked(self, user):
         """ Return a list of all blocked  """
         qs = Block.objects.filter(blocked=user).all()
-        blocked = [u.blocked for u in qs]
-        return blocked
+        return [u.blocked for u in qs]
 
     def blocking(self, user):
         """ Return a list of all users the given user could blocks """
         qs = Block.objects.filter(blocker=user).all()
-        blocking = [u.blocked for u in qs]
-        return blocking
+        return [u.blocked for u in qs]
 
     def add_block(self, blocker, blocked):
         """ Create 'blocker' blocks 'blocked' relationship """
@@ -143,12 +139,15 @@ class BlockManager(models.Manager):
         except Block.DoesNotExist:
             return False
 
+
 class Block(models.Model):
     '''Model representing blocking relationships'''
-    blocker = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE, related_name='blocking')
-    blocked = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE, related_name='blockees')
+    blocker = models.ForeignKey(
+        'profiles.Profile', on_delete=models.CASCADE, related_name='blocking')
+    blocked = models.ForeignKey(
+        'profiles.Profile', on_delete=models.CASCADE, related_name='blockees')
     created = models.DateTimeField(default=timezone.now)
-    
+
     def __str__(self):
         return f"{self.blocker} has blocked {self.blocked}."
 
@@ -157,6 +156,3 @@ class Block(models.Model):
         if self.blocker == self.blocked:
             raise ValidationError('You cannot block yourself!')
         super().save(*args, **kwargs)
-    
-    
-    
