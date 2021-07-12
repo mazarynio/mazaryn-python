@@ -3,15 +3,13 @@ from django.dispatch import receiver
 from .models import Relationship
 
 
-
-
 @receiver(post_save, sender=Relationship)
 def post_save_add_friends(sender, instance, created, **kwargs):
     '''Invoked when the relationship status is accepted thus adding friends'''
-    sender_ = instance.sender
-    receiver_ = instance.receiver
-
     if instance.status == "accepted":
+        sender_ = instance.sender
+        receiver_ = instance.receiver
+
         sender_.friends.add(receiver_.user)
         receiver_.friends.add(sender_.user)
         sender_.save()
