@@ -72,8 +72,7 @@ class ReceivedInvitesList(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         profile = Profile.objects.get(user=self.request.user)
-        queryset = Relationship.objects.invitations_received(profile)
-        return queryset
+        return Relationship.objects.invitations_received(profile) #queryset
 
     def get(self, request):
         return self.list(request)
@@ -84,8 +83,7 @@ class InvitesProfileList(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         sender = self.request.user
-        queryset = Profile.objects.get_all_profiles_to_invite(sender)
-        return queryset
+        return Profile.objects.get_all_profiles_to_invite(sender) #queryset
 
     def get(self, request):
         return self.list(request)
@@ -96,9 +94,7 @@ class FriendsListView(generics.GenericAPIView, mixins.ListModelMixin):
     serializer_class = ProfileSerializer
 
     def get_queryset(self):
-        current_friends = self.request.user.friends.all()
-
-        return current_friends
+        return self.request.user.friends.all() #current friends
 
 
 
@@ -108,9 +104,7 @@ class FollowersListView(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         user = self.request.user
-        followers = Follow.objects.followers(user)
-
-        return followers
+        return Follow.objects.followers(user) #return followers
 
 
 class FollowingListView(generics.GenericAPIView, mixins.ListModelMixin):
@@ -119,9 +113,7 @@ class FollowingListView(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         user = self.request.user
-        following = Follow.objects.following(user)
-
-        return following
+        return Follow.objects.following(user) #return following
 
 
 @api_view(['POST', ])
@@ -147,9 +139,7 @@ class BlockedListView(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         user = self.request.user
-        blocked = Block.objects.blocked(user)
-
-        return blocked
+        return Block.objects.blocked(user) #return blocked
 
 class BlockingListView(generics.GenericAPIView, mixins.ListModelMixin):
     '''Lists who this current user can block'''
@@ -157,8 +147,7 @@ class BlockingListView(generics.GenericAPIView, mixins.ListModelMixin):
 
     def get_queryset(self):
         user = self.request.user
-        blocking = Block.objects.blocking(user)
-        return blocking
+        return Block.objects.blocking(user) #return blocking
 
 
 @api_view(['POST', ])
