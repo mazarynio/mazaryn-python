@@ -23,13 +23,15 @@ def all_messages(request):
 @login_required
 @api_view(['POST',])
 def messages_with_one_friend(request, slug):
-     if request.user.slug == slug:
-         return redirect(reverse_lazy('communications:all-messages'))
-     try:
-         if not Profile.objects.get(slug=slug):
-             return redirect(reverse_lazy('communications:all-messages'))
-     except:
-         return redirect(reverse_lazy('communications:all-messages'))
+    if request.user.slug == slug:
+        return redirect(reverse_lazy('communications:all-messages'))
+    try:
+        if not Profile.objects.get(slug=slug):
+            return redirect(reverse_lazy('communications:all-messages'))
+    except:
+        return redirect(reverse_lazy('communications:all-messages'))
+    
+    pass
 
     # serializer = MessageSerializer(data=request.data, friend=slug)
     
