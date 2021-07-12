@@ -60,8 +60,7 @@ class ProfileManager(models.Manager):
 
     def get_all_profiles(self, myself):
         '''Lists all profiles to the user excluding the logged in user instance from the list.'''
-        profiles = Profile.objects.all().exclude(user=myself)
-        return profiles
+        return Profile.objects.all().exclude(user=myself)
 
     def get_all_profiles_to_invite(self, myself):
         '''Returns all profiles eligible for relationship to be initiated, the method excludes the following 
@@ -79,9 +78,8 @@ class ProfileManager(models.Manager):
                 accepted_invitations.append(relationship.receiver)
                 accepted_invitations.append(relationship.sender)
 
-        available = [
+        return [
             profile for profile in profiles if profile not in accepted_invitations]
-        return available
 
 
 def upload_avatar(instance, filename):
@@ -130,19 +128,12 @@ class Profile(models.Model):
     def get_no_of_likes_given(self):
         '''Reurns the count of likes of a user.'''
         likes = self.like_set.all()
-        total_liked = 0
-        for item in likes:
-            if item.value == 'Like':
-                total_liked += 1
-        return total_liked
+        return sum(item.value == 'Like' for item in likes)
 
     def get_no_of_likes_received(self):
         '''Returns the count of likes from a user's total posts'''
         posts = self.posts.all()
-        total_liked = 0
-        for item in posts:
-            total_liked += item.liked.all().count()
-        return total_liked
+        return sum(item.liked.all().count() for item in posts)
 
     def __str__(self):
         return f"{self.user.email}"
