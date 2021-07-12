@@ -6,8 +6,9 @@ from django.utils import timezone
 
 class RelationshipManager(models.Manager):
     def invitations_received(self, receiver):
-        return Relationship.objects.filter(
+        rlnshp_query_set = Relationship.objects.filter(
             receiver=receiver, status='send')
+        return rlnshp_query_set
 
 
 STATUS_CHOICES = [
@@ -36,12 +37,16 @@ class FollowManager(models.Manager):
     def followers(self, user):
         '''Returns list of all followers'''
         qs = Follow.objects.filter(followee=user).all()
-        return [p.follower for p in qs] 
+        followers = [p.follower for p in qs]
+
+        return followers
 
     def following(self, user):
         '''Return a list of all users the given user follows '''
         qs = Follow.objects.filter(follower=user).all()
-        return [p.followee for p in qs] 
+        following = [p.followee for p in qs]
+
+        return following
 
     def add_follower(self, follower, followee):
         """Create's 'follower' follows 'followee' relationship"""
@@ -67,12 +72,10 @@ class FollowManager(models.Manager):
 
     def follows(self, follower, followee):
         """ Does follower follow followee?"""
-        if (
-            followers
-            and followee in followers
-            or following
-            and follower in following
-        ):
+        if followers and followee in followers:
+            return True
+
+        elif following and follower in following:
             return True
 
         else:
@@ -106,12 +109,14 @@ class BlockManager(models.Manager):
     def blocked(self, user):
         """ Return a list of all blocked  """
         qs = Block.objects.filter(blocked=user).all()
-        return [u.blocked for u in qs]
+        blocked = [u.blocked for u in qs]
+        return blocked
 
     def blocking(self, user):
         """ Return a list of all users the given user could blocks """
         qs = Block.objects.filter(blocker=user).all()
-        return [u.blocked for u in qs]
+        blocking = [u.blocked for u in qs]
+        return blocking
 
     def add_block(self, blocker, blocked):
         """ Create 'blocker' blocks 'blocked' relationship """
