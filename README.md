@@ -1,6 +1,6 @@
 ## Project's Title
 
-Mazaryn
+#Mazaryn Social Network
 
 ## Description
 
