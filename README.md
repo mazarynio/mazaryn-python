@@ -1,6 +1,5 @@
-## Project's Title
 
-#Mazaryn Social Network
+# Mazaryn Social Network
 
 ## Description
 
