@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class GroupViewSet(viewsets.ModelViewSet):
+    #Not yet worked on well especially logging aspect
     logger.info("Listing all groups...")
 
     serializer_class = GroupSerializer

@@ -4,6 +4,6 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 
-router.register('groups', GroupViewSet)
+router.register('', GroupViewSet)
 
 urlpatterns = router.urls
