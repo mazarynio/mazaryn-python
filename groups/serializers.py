@@ -8,10 +8,3 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'group_name', 'members',
                   'posts', 'created_by', 'created']
         depth = 1
-        
-        def create(self,validated_data):
-            instance = super().create(validated_data)
-            instance.admin.add(instance.created_by)
-            instance.save()
-            
-            return instance
