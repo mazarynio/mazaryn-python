@@ -6,3 +6,5 @@ from .models import Group
 class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
+    
+
