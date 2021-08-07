@@ -12,7 +12,8 @@ class GroupSerializer(serializers.ModelSerializer):
     def create(self,validated_data):
         instance = super().create(validated_data)
         request = self.context['request']
-        instance.admin = request.user.profile
+        
+        instance.admin.add(request.user.profile)
         instance.created_by = request.user.profile
         instance.save()
         instance.members.add(request.user.profile)
