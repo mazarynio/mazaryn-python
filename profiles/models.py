@@ -7,6 +7,7 @@ from groups.models import Group
 import profiles
 import os
 from friends.models import Relationship
+from django.core import validators
 
 
 class UserManager(BaseUserManager):
@@ -96,6 +97,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
+    phone_number = models.CharField(validators=[validators.RegexValidator(
+        regex=r'^\1?\d{9,10}$')], max_length=11, blank=True)
     bio = models.TextField(default='No bio...', max_length=300, blank=True)
     email = models.EmailField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
