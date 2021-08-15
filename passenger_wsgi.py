@@ -1,0 +1,1 @@
+from mazaryn.wsgi import application
