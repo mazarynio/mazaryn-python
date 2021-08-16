@@ -229,16 +229,16 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        # 'groups': {
-        #     'handlers': ['console'],
-        #     'level': 'DEBUG',
-        #     'propagate': True,
-        # },
-        # 'posts': {
-        #     'handlers': ['console'],
-        #     'level': 'DEBUG',
-        #     'propagate': True,
-        # },
+        'groups': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'posts': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
 
     },
     'mazaryn': {

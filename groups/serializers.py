@@ -1,6 +1,8 @@
-from rest_framework import serializers
+import logging
 from .models import Group
+from rest_framework import serializers
 
+logger = logging.getLogger(__name__)
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,6 +12,8 @@ class GroupSerializer(serializers.ModelSerializer):
         depth = 1
     
     def create(self,validated_data):
+        logger.info(" \n ========== \n Creating a new group...\n ========= \n New group created \n **********")
+        
         instance = super().create(validated_data)
         request = self.context['request']
         
