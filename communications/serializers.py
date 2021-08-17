@@ -2,11 +2,13 @@ from django.db.models import fields
 from rest_framework import serializers
 from communications.models import Room, Message
 
+#Model Serializer
 class MessageSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     
     class Meta:
         model = Message
+        #Specify fields to include/serialize
         fields = [
             'id',
             'room',
@@ -18,6 +20,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('room', 'timestamp',)
     
+#Model Seriaalizer
 class RoomSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True)
     friend = serializers.CharField(required=False)
@@ -30,6 +33,7 @@ class RoomSerializer(serializers.ModelSerializer):
             'friend',
             'messages'
         ]
+        #generate nested representations
         depth = 1
     
     def create(self, validated_data):
