@@ -1,10 +1,11 @@
 import json
+
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from channels.layers import get_channel_layer
 from django.db.models import Q
-
 from profiles.models import Profile
+
 from .models import Message, Room
 
 
@@ -15,9 +16,12 @@ class ChatConsumer(WebsocketConsumer):
         self.user = None
         self.room = None
 
+    """Fetch messages from friends."""
+
     def fetch_messages(self, data):
         author = Profile.objects.get(username=data['author'])
         friend = Profile.objects.get(username=data['friend'])
+        # messages fetched are sorted by time posted
         messages = Message.objects.filter(Q(author=author, friend=friend) | Q(author=friend, friend=author)).order_by(
             '-timestamp')[:20]
         content = {
@@ -25,6 +29,8 @@ class ChatConsumer(WebsocketConsumer):
             'messages': self.messages_to_json(messages)
         }
         self.send_message(content)
+
+    """Create a new message"""
 
     def new_message(self, data):
         author = data['from']
@@ -53,6 +59,7 @@ class ChatConsumer(WebsocketConsumer):
         )
         return self.send_chat_message(content)
 
+    # Records and sends message when typing starts
     def typing_start(self, data):
         author = data['from']
         content = {
@@ -62,12 +69,14 @@ class ChatConsumer(WebsocketConsumer):
 
         return self.send_chat_message(content)
 
+    # records and sends message when typing stops
     def typing_stop(self, data):
         content = {
             'command': 'typing_stop',
         }
         return self.send_chat_message(content)
 
+    # store data in json format
     def messages_to_json(self, messages):
         return [self.message_to_json(message) for message in messages]
 
@@ -112,6 +121,7 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name
         )
 
+    # deserialize native string, byte, or byte array which consists of JSON data into Python Dictionary.
     def receive(self, text_data):
         data = json.loads(text_data)
         self.commands[data['command']](self, data)
@@ -126,6 +136,7 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def send_message(self, message):
+        #convert python object(text_data) into a json string
         self.send(text_data=json.dumps(message))
 
     def chat_message(self, event):
