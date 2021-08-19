@@ -45,7 +45,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    '''Custom user model for handling details required for Registration, Login.
+    '''Custom User model for handling details required for Registration, Login.
     Besides this model sets attributes such as active and superuser statuses.
     This model defaults email as a required field.'''
     username = None
@@ -93,7 +93,7 @@ def upload_avatar(instance, filename):
 
 
 class Profile(models.Model):
-    '''Returns refined details about a registered user, it extends the default **User model '''
+    '''Extends the default **User** model '''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
