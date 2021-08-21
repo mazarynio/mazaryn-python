@@ -18,6 +18,7 @@ django-templated-mail==1.1.1
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.7.2
 djoser==2.1.0
+docutils==0.17.1
 drf-yasg==1.20.0
 hyperlink==21.0.0
 idna==3.2
@@ -51,4 +52,5 @@ txaio==21.2.1
 typing-extensions==3.10.0.0
 uritemplate==3.0.1
 urllib3==1.26.6
+whitenoise==5.3.0
 zope.interface==5.4.0
