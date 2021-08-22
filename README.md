@@ -1,5 +1,10 @@
 
 # Mazaryn Social Network
+![GitHub top language](https://img.shields.io/github/languages/top/mazarynxyz/mazaryn)
+![GitHub last commit](https://img.shields.io/github/last-commit/mazarynxyz/mazaryn)
+![GitHub repo size](https://img.shields.io/github/repo-size/mazarynxyz/mazaryn)
+![GitHub](https://img.shields.io/github/license/mazarynxyz/mazaryn)
+![Twitter Follow](https://img.shields.io/twitter/follow/mazaryn)
 
 ## Description
 
