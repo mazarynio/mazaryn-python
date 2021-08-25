@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from rest_framework.authtoken import views  # for testing purposes
+from rest_framework.authtoken import views as authtoken_views 
 
 # for documentation
 from rest_framework import permissions
@@ -33,6 +33,7 @@ urlpatterns = [
    path('groups/', include("groups.urls")),
    url(r'^auth/', include('djoser.urls')),
    url(r'^auth/', include('djoser.urls.authtoken')),
+   path('mobile-api/auth/',authtoken_views.obtain_auth_token,name="mobile_token"),# mobile token authentication endpoint  
 
    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
