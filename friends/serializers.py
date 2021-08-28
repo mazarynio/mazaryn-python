@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from friends.models import Block, Follow, Relationship
+from friendship.models import Friend, Block, Follow
 
 
 class FollowSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class BlockSerializer(serializers.ModelSerializer):
         fields = ["id", "blocker", "blocked"]
 
 
-class RelationshipSerializer(serializers.ModelSerializer):
+class FriendSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Relationship
+        model = Friend
         fields = "__all__"
