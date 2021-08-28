@@ -33,6 +33,7 @@ urlpatterns = [
    path('groups/', include("groups.urls")),
    url(r'^auth/', include('djoser.urls')),
    url(r'^auth/', include('djoser.urls.authtoken')),
+   path('friends/', include('friendship.urls')),
    path('mobile-api/auth/',authtoken_views.obtain_auth_token,name="mobile_token"),# mobile token authentication endpoint  
 
    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
