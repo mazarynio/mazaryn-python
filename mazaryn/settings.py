@@ -50,10 +50,11 @@ INSTALLED_APPS = [
     'groups',
     'notifications',
 
-    'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
-    'drf_yasg',
+    'rest_framework',# package
+    'rest_framework.authtoken', # package
+    'djoser', # package
+    'drf_yasg', # package
+    'friendship', # package
 ]
 
 MIDDLEWARE = [
