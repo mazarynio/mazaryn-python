@@ -6,7 +6,6 @@ from django.db import models
 from groups.models import Group
 import profiles
 import os
-from friends.models import Relationship
 from django.core import validators
 
 
@@ -63,24 +62,24 @@ class ProfileManager(models.Manager):
         '''Lists all profiles to the user excluding the logged in user instance from the list.'''
         return Profile.objects.all().exclude(user=myself)
 
-    def get_all_profiles_to_invite(self, myself):
-        '''Returns all profiles eligible for relationship to be initiated, the method excludes the following 
-        from the list: 
-        1.Instance of the current user logged in
-        2.Current friends
-        3.Instances where the status of the relationship is **-sent** (awaiting for acceptance)'''
-        profiles = Profile.objects.all().exclude(user=myself)
-        profile = Profile.objects.get(user=myself)
-        qs = Relationship.objects.filter(
-            Q(sender=profile) | Q(receiver=profile))
-        accepted_invitations = []
-        for relationship in qs:
-            if relationship.status == 'accepted':
-                accepted_invitations.append(relationship.receiver)
-                accepted_invitations.append(relationship.sender)
+    # def get_all_profiles_to_invite(self, myself):
+    #     '''Returns all profiles eligible for relationship to be initiated, the method excludes the following 
+    #     from the list: 
+    #     1.Instance of the current user logged in
+    #     2.Current friends
+    #     3.Instances where the status of the relationship is **-sent** (awaiting for acceptance)'''
+    #     profiles = Profile.objects.all().exclude(user=myself)
+    #     profile = Profile.objects.get(user=myself)
+    #     qs = Relationship.objects.filter(
+    #         Q(sender=profile) | Q(receiver=profile))
+    #     accepted_invitations = []
+    #     for relationship in qs:
+    #         if relationship.status == 'accepted':
+    #             accepted_invitations.append(relationship.receiver)
+    #             accepted_invitations.append(relationship.sender)
 
-        return [
-            profile for profile in profiles if profile not in accepted_invitations]
+    #     return [
+    #         profile for profile in profiles if profile not in accepted_invitations]
 
 
 def upload_avatar(instance, filename):
@@ -103,7 +102,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
     avatar = models.ImageField(default='avatar.png', upload_to=upload_avatar)
-    friends = models.ManyToManyField(User, blank=True, related_name='friends')
+    friends = models.ManyToManyField(User, blank=True, related_name='ffriends')
     groups = models.ManyToManyField(Group, blank=True)
 
     slug = models.SlugField(unique=True, blank=True)

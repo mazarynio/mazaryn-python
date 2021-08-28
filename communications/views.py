@@ -4,9 +4,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from django.http import JsonResponse
 
-from profiles.models import Profile, Relationship
 from .serializers import RoomSerializer, MessageSerializer
-
 from rest_framework.decorators import action, api_view
 
 
