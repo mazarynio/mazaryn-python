@@ -14,6 +14,7 @@ daphne==3.0.2
 defusedxml==0.7.1
 Django==3.2.4
 django-cors-headers==3.8.0
+django-friendship==1.9.2
 django-templated-mail==1.1.1
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.7.2
