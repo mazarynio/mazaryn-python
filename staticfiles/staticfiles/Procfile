@@ -1,1 +1,0 @@
-web: gunicorn mazaryn.wsgi --log-file -
