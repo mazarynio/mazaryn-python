@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'friends',
     'posts',
     'groups',
-    'notifications',
 
     'rest_framework',# package
     'rest_framework.authtoken', # package
