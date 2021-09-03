@@ -13,14 +13,23 @@ class MessageSerializer(serializers.ModelSerializer):
             'id',
             'room',
             'message',
-            'author',
+            'author', 
             'friend',
             'timestamp'
         ]
 
         read_only_fields = ('room', 'timestamp',)
-    
-#Model Seriaalizer
+
+class GetAllMessageRequestSerializer(serializers.Serializer):
+    authorId = serializers.IntegerField(required=True)
+
+
+class FriendtoFriendMessagesSerializer(serializers.Serializer):
+    authorId = serializers.IntegerField(required=True)
+    friendId = serializers.IntegerField(required=True)  
+
+
+#Model Serializer
 class RoomSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True)
     friend = serializers.CharField(required=False)

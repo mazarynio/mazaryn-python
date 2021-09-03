@@ -1,9 +1,10 @@
 from django.urls import path
-from .views import all_messages, messages_with_one_friend
+from .views import all_messages, MessageWithOneFriendView,SendMessageToOneFriendView
 
 app_name = "communications"
 
 urlpatterns = [
-    path('', all_messages, name="all-messages"),
-    path('<slug:friend>', messages_with_one_friend, name="messages-with-one-friend"),
+    path('getallmessages', all_messages, name="all-messages"),
+    path('getfriendmessages',MessageWithOneFriendView.as_view(), name="messages-with-one-friend"),
+    path('sendmessagetofriend',SendMessageToOneFriendView.as_view(), name="send-message-to-friend"),
 ]
