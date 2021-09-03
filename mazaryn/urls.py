@@ -30,7 +30,6 @@ schema_view = get_schema_view(
 urlpatterns = [
    path('admin/doc/', include('django.contrib.admindocs.urls')),# Visibilty is to admin only
    path('admin/', admin.site.urls),
-   path('chat/', include('communications.urls')),
    path('groups/', include("groups.urls")),
    url(r'^auth/', include('djoser.urls')),
    url(r'^auth/', include('djoser.urls.authtoken')),
