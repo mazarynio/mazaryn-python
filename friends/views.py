@@ -4,11 +4,22 @@ from .serializers import BlockSerializer, FollowSerializer, FriendSerializer
 from profiles.models import Profile
 from friendship.models import FriendshipRequest
 
+class SendFriendRequest(generics.CreateAPIView):
+    other_user = Profile.objects.get(pk=2)
+    Friend.objects.add_friend(request.user,  other_user,message='Hi! I would like to add you') 
+class AcceptFriendRequest(generics.CreateAPIView):
+    other_user = Profile.objects.get(pk=2)
+    friend_request = FriendshipRequest.objects.get(from_user=request.user, to_user=other_user)
+    friend_request.accept()   
 
-# def send_friend_request():
-#     other_user = Profile.objects.get(pk=1)
-#     Friend.objects.add_friend(request.user,  other_user,message='Hi! I would like to add you')
-      
+class RemoveFriend(generics.CreateAPIView):
+    other_user = Profile.objects.get(pk=2)
+    Friend.objects.remove_friend(request.user, other_user)
+
+class RejectFriendRequest(generics.CreateAPIView):
+    other_user = Profile.objects.get(pk=2)
+    friend_request = FriendshipRequest.objects.get(from_user=request.user, to_user=other_user)
+    friend_request.reject()    
 class FriendsList(generics.ListAPIView):
     '''List friends to the logged-in user instance'''
     
@@ -37,12 +48,23 @@ class FollowersView(generics.ListAPIView):
     def get_queryset(self):
         return Follow.objects.followers(self.request.user)
     
+class Follow(generics.CreateAPIView):
+    other_user = Profile.objects.get(pk=2)
+    Follow.objects.add_follower(request.user, other_user)
+
 class FollowingView(generics.ListCreateAPIView):
     '''Lists potential users to be followed by the logged-in user instance'''
     serializer_class = FollowSerializer
     def get_queryset(self):
         return Follow.objects.following(self.request.user)
-
+class Block(generics.CreateAPIView):
+    other_user = Profile.objects.get(pk=2)
+    Block.objects.add_block(request.user, other_user)
+    
+class Unblock(generics.CreateAPIView):
+    other_user = Profile.objects.get(pk=2)
+    Block.objects.remove_block(request.user, other_user)
+    
 class BlockingView(generics.ListCreateAPIView):
     '''Lists potential users to be blocked by the logged-in user instance'''
     
