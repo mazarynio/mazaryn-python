@@ -1,25 +1,42 @@
-from rest_framework import generics
-from friendship.models import Friend, Follow, Block
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework import status
+from friends.models import Friend, Follow, Block, FriendshipRequest
 from .serializers import BlockSerializer, FollowSerializer, FriendSerializer
 from profiles.models import Profile
-from friendship.models import FriendshipRequest
+
+
+class RemoveFriend(generics.DestroyAPIView):
+    """
+    method:         DELETE
+    HEADER:         Authorization: token <auth-token>001caab988d3426760ba798a77f0c5081136cd2a
+    request_data :  {"profile_id": int}
+    """
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def destroy(self, request, *args, **kwargs):
+        profile_id = request.data.get("profile_id")
+        if not profile_id:
+            return Response({"unfriend": False, "message": "Profile id missing to unfriend user"},
+                            status=status.HTTP_400_BAD_REQUEST)
+        profile = Profile.objects.get(id=profile_id)
+        res = Friend.objects.remove_friend(request.user, profile.user)
+        return Response({"unfriend": res, "message": None}, status=status.HTTP_200_OK)
+
+
 
 class SendFriendRequest(generics.CreateAPIView):
     other_user = Profile.objects.get(pk=2)
-    Friend.objects.add_friend(request.user,  other_user,message='Hi! I would like to add you') 
+    Friend.objects.add_friend(request.user,  other_user,message='Hi! I would like to add you')
 class AcceptFriendRequest(generics.CreateAPIView):
     other_user = Profile.objects.get(pk=2)
     friend_request = FriendshipRequest.objects.get(from_user=request.user, to_user=other_user)
     friend_request.accept()   
 
-class RemoveFriend(generics.CreateAPIView):
-    other_user = Profile.objects.get(pk=2)
-    Friend.objects.remove_friend(request.user, other_user)
-
 class RejectFriendRequest(generics.CreateAPIView):
     other_user = Profile.objects.get(pk=2)
     friend_request = FriendshipRequest.objects.get(from_user=request.user, to_user=other_user)
-    friend_request.reject()    
+    friend_request.reject()
 class FriendsList(generics.ListAPIView):
     '''List friends to the logged-in user instance'''
     
