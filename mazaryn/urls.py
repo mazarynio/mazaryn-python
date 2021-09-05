@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework.authtoken import views as authtoken_views 
 
+
 # for documentation
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
