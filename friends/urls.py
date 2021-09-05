@@ -18,5 +18,4 @@ urlpatterns = [
     path('blocking/',BlockingView.as_view()),
     path('blocked/',BlockedView.as_view()),
     path('unblock/', Unblock.as_view()),
-    
 ]
