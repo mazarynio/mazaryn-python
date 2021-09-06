@@ -118,6 +118,7 @@ WSGI_APPLICATION = 'mazaryn.wsgi.application'
 # Points to the custom user model
 AUTH_USER_MODEL = 'profiles.User'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -216,7 +217,7 @@ LOGGING = {
             'formatter': 'simple'}
     },
     'loggers': {
-        'communications': {
+        'profiles': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,

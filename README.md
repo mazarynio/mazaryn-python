@@ -21,7 +21,8 @@
 > 5. channels
 > 6. channels-redis
 > 7. djoser
-> 8. djangorestframework_simplejwt
+> 8. django-friendship
+> 9. drf_yasg
 
 > Open terminal/command prompt and run:
 >
