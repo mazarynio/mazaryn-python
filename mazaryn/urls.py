@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework.authtoken import views as authtoken_views 
 
+
 # for documentation
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -26,10 +27,11 @@ schema_view = get_schema_view(
 )
 
 
+
+
 urlpatterns = [
    path('admin/doc/', include('django.contrib.admindocs.urls')),# Visibilty is to admin only
    path('admin/', admin.site.urls),
-   path('chat/', include('communications.urls')),
    path('groups/', include("groups.urls")),
    url(r'^auth/', include('djoser.urls')),
    url(r'^auth/', include('djoser.urls.authtoken')),

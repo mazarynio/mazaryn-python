@@ -1,25 +1,21 @@
-from django.urls import path, include
+from django.urls import path
 from .views import *
-from rest_framework import routers
-
-
-router = routers.DefaultRouter()
-
-router.register('', FriendViewSet, basename='Friend')
-router.register('unread', UnreadFriendShipViewSet, basename='Friend')
-router.register('requests', FriendShipRequestViewSet, basename='Friend')
-router.register('', FriendShipRequestCountViewSet, basename='Friend')
-router.register('rejected', RejectedFriendShipRequests, basename='Friend')
-router.register('', RejectedFriendShipRequestCount, basename='Friend')
-router.register('sent-requests', SentFriendShip, basename='Friend')
-router.register('', FriendShipTest, basename='Friend')
-router.register('followers', FollowersViewSet, basename='Friend')
-router.register('following', FollowingViewSet, basename='Friend')
-router.register('blocking', BlockingViewSet, basename='Friend')
-router.register('blocked', BlockedViewSet, basename='Friend')
-router.register('', BlockedTest, basename='Friend')
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+    
+    path('all/',FriendsList.as_view()),
+    path('send-request/', SendFriendRequest.as_view()),
+    path('accept-request/', AcceptFriendRequest.as_view()),
+    path('reject-request/', RejectFriendRequest.as_view()),
+    path('remove-friend/', RemoveFriend.as_view()),
+    path('requests/',FriendShipRequests.as_view()),
+    path('rejected/',RejectedFriendShipRequests.as_view()),
+    path('follow/', Follow.as_view()),
+    path('followers/',FollowersView.as_view()),
+    path('following/',FollowingView.as_view()),
+    path('block/', Block.as_view()),
+    path('blocking/',BlockingView.as_view()),
+    path('blocked/',BlockedView.as_view()),
+    path('unblock/', Unblock.as_view()),
 ]
