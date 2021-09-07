@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def post_save_create_profile(sender, instance, created, **kwargs):
     '''Automates the creation of a new profile on each user registration'''
 
-    logger.info('Profile for the new user created')
+    logger.info(f' \n ========== \n Creating a new user...\n ========= \n Welcome to Mazaryn {instance.email} \n **********')
     if created:
         Profile.objects.create(user=instance)
 

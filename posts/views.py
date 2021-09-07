@@ -10,12 +10,9 @@ logger = logging.getLogger(__name__)
 
 
 class PostViewSet(ModelViewSet):
-    '''This class leverages on the modelviewset functionality in order to handle the required 
-    posts operations ie. it returns a post, lists queryed posts etc. 
-    Wholesomely, POST,GET,PUT,DELETE http requests.'''
-    
-    logger.info("Retrieving all posts...")
-
+    """
+    **methods**: ```POST,GET,PUT,DELETE```
+    """
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     lookup_field = 'id'
