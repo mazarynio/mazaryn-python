@@ -1,13 +1,12 @@
-from friends.models import FriendshipRequest
-from django.contrib.auth import get_user_model
-# FriendshipRequest.objects.last().accept()
-from django.apps import apps
-User = get_user_model()
+from django.core.management import BaseCommand
 
-FriendshipRequest.objects.all().delete()
 
-Friend = apps.get_model("friends", "Friend")
-Friend_ship = apps.get_model("friendship", "Friend")
-u1, u2 = User.objects.filter()[:2]
-fs = Friend_ship.objects.add_friend(u1, u2)
-fs.accept()
+class Command(BaseCommand):
+    """
+        command: python manage.py debug
+    """
+
+    def handle(self, *args, **options):
+        print(args, options)
+        # keep you logic here to run in command
+        pass
