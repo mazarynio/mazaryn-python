@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from posts.models import Post, Comment
+from posts.models import Post, Comment, PostImage
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    '''Posts serializer 'converts'/serializes comments,serving them to and from the database.'''
+    '''Serializes comments.'''
     
     id = serializers.IntegerField(required=False)
     
@@ -16,6 +16,11 @@ class CommentSerializer(serializers.ModelSerializer):
             'user'
         ]
         read_only_fields = ('post',)
+        
+class PostImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostImage
+        fields = ('thumbnail')
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -24,8 +29,6 @@ class PostSerializer(serializers.ModelSerializer):
     explicitly handles the comments - comments aren't a field in posts model.'''
     
     comments = CommentSerializer(many=True, required=False)
-    image = serializers.ImageField(required=False)
-
     class Meta:
         model = Post
         fields = [
