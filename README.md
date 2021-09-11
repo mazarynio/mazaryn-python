@@ -28,3 +28,38 @@
 >
 > - `python manage.py migrate`
 > - `python manage.py createsuperuser`
+
+
+
+### Set up postgres guide for linux:
+
+1. Install postgres
+```
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+2. Access postgres console:
+`sudo -i -u postgres `
+OR 
+`sudo -u postgres psql`
+
+
+3. change password command f
+`\password postgres`
+
+4. Add database
+`create database mazaryn;`
+
+5. Set following os constants
+```
+DATABASE_NAME
+DATABASE_USER
+DATABASE_PASSWORD
+DATABASE_HOST
+DATABASE_PORT
+```
+
+
+5. Migrate models:
+`python manage.py migrate`
