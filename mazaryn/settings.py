@@ -101,7 +101,7 @@ TEMPLATES = [
     },
 ]
 
-
+LOGOUT_REDIRECT_URL = 'admin/'
 
 WSGI_APPLICATION = 'mazaryn.wsgi.application'
 
