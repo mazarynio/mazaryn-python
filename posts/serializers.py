@@ -30,20 +30,22 @@ class PostSerializer(serializers.ModelSerializer):
     
     comments = CommentSerializer(many=True, required=False)
     class Meta:
+        read_only_fields = ('liked', )
         model = Post
         fields = [
             'id',
-            'image',
-            'content',
+            'content',            
             'liked',
             'created',
             'author',
             'comments'
         ]
-        depth = 1
 
     def create(self, validated_data):
-        comments = validated_data.pop('comments')
+        if "comments" in validated_data.keys():
+            comments = validated_data.pop('comments')
+        else:
+            comments = list()
         post = Post.objects.create(**validated_data)
         for comment in comments:
             Comment.objects.create(**comment, post=post)
