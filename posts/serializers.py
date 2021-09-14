@@ -30,23 +30,27 @@ class PostSerializer(serializers.ModelSerializer):
     
     comments = CommentSerializer(many=True, required=False)
     class Meta:
-        read_only_fields = ('liked', )
+        read_only_fields = ('liked','author','comments', )
         model = Post
         fields = [
             'id',
             'content',            
             'liked',
-            'created',
             'author',
+            'created',
             'comments'
         ]
+        
+        # depth = 1
 
     def create(self, validated_data):
+        request = self.context['request']
+        
         if "comments" in validated_data.keys():
             comments = validated_data.pop('comments')
         else:
             comments = list()
-        post = Post.objects.create(**validated_data)
+        post = Post.objects.create(author=request.user.profile, **validated_data)
         for comment in comments:
             Comment.objects.create(**comment, post=post)
         return post
