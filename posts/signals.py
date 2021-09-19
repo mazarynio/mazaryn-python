@@ -14,13 +14,13 @@ logger = logging.getLogger(__name__)
 
 @receiver(pre_save, sender=PostImage)
 def generate_thumbnail(sender, instance, ** kwargs):
-    logger.info('Generating thumbnail for post %d', instance.post.id)
+    logger.info('============== \n \n Generating thumbnail for post %d \n\n     ============= \n\n         Done! \n', instance.post.id)
 
     image = Image.open(instance.image)
     image = image.convert('RGB')
     image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
     temp_thumb = BytesIO()
-    image.save(temp_thumb, 'JPEG')
+    image.save(temp_thumb, 'png')
     temp_thumb.seek(0)
 
     # save=False, because otherwise it will run in an infinite loop!
