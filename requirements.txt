@@ -16,10 +16,12 @@ Django==3.2.4
 django-cors-headers==3.8.0
 django-friendship==1.9.2
 django-templated-mail==1.1.1
+django-versatileimagefield==2.2
 djangorestframework==3.12.4
 djangorestframework-simplejwt==4.7.2
 djoser==2.1.0
 docutils==0.17.1
+drf-flex-fields==0.9.4
 drf-yasg==1.20.0
 hyperlink==21.0.0
 idna==3.2
@@ -31,12 +33,14 @@ MarkupSafe==2.0.1
 oauthlib==3.1.1
 packaging==21.0
 Pillow==8.3.1
+psycopg2-binary==2.9.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycparser==2.20
 PyJWT==2.1.0
 pyOpenSSL==20.0.1
 pyparsing==2.4.7
+python-magic==0.4.24
 python3-openid==3.2.0
 pytz==2021.1
 requests==2.26.0
@@ -55,4 +59,3 @@ uritemplate==3.0.1
 urllib3==1.26.6
 whitenoise==5.3.0
 zope.interface==5.4.0
-psycopg2-binary==2.9.1
