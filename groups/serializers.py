@@ -9,7 +9,6 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = ['id', 'group_name', 'admin','members',
                   'posts', 'created_by', 'created']
-        depth = 1
     
     def create(self,validated_data):
         logger.info(" \n ========== \n Creating a new group...\n ========= \n New group created \n **********")
