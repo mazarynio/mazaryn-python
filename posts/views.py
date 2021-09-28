@@ -1,15 +1,16 @@
-from .serializers import PostSerializer, CommentSerializer
-from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer, PostImageSerializer
+from .models import Post, Comment, PostImage
 import logging
-from rest_framework.viewsets import ModelViewSet
+from rest_flex_fields import FlexFieldsModelViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import parsers
 
 
 logger = logging.getLogger(__name__)
 
 
-class PostViewSet(ModelViewSet):
+class PostViewSet(FlexFieldsModelViewSet):
     '''This class leverages on the modelviewset functionality in order to handle the required 
     posts operations ie. it returns a post, lists queryed posts etc. 
     Wholesomely, POST,GET,PUT,DELETE http requests.'''
@@ -18,7 +19,8 @@ class PostViewSet(ModelViewSet):
 
     serializer_class = PostSerializer
     queryset = Post.objects.all()
-    lookup_field = 'id'
+    parser_classes = [parsers.MultiPartParser]
+    # lookup_field = 'id'
 
     @action(detail=True, methods=["GET"],)
     def comments(self, request, id=None):
