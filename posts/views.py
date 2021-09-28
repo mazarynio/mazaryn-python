@@ -21,6 +21,12 @@ class PostViewSet(FlexFieldsModelViewSet):
     queryset = Post.objects.all()
     parser_classes = [parsers.MultiPartParser]
     # lookup_field = 'id'
+    
+    def get_parsers(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return []
+        return super().get_parsers()
+
 
     @action(detail=True, methods=["GET"],)
     def comments(self, request, id=None):

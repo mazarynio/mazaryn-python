@@ -58,6 +58,7 @@ class AcceptFriendRequest(generics.UpdateAPIView):
     HEADER:         Authorization: token <auth-token>
     request_data :  {"profile_id": int}
     """
+    serializer_class = FriendSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
     def update(self, request, *args, **kwargs):
@@ -148,6 +149,7 @@ class Block(generics.CreateAPIView):
     HEADER:         Authorization: token <auth-token>
     request_data :  {"profile_id": int}
     """
+    serializer_class = BlockSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
     def create(self, request, *args, **kwargs):
