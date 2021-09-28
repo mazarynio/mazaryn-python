@@ -12,6 +12,7 @@ from rest_framework.authtoken import views as authtoken_views
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from .views import ping
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -32,6 +33,7 @@ schema_view = get_schema_view(
 urlpatterns = [
    path('admin/doc/', include('django.contrib.admindocs.urls')),# Visibilty is to admin only
    path('admin/', admin.site.urls),
+   path('ping', ping),
    path('groups/', include("groups.urls")),
    url(r'^auth/', include('djoser.urls')),
    url(r'^auth/', include('djoser.urls.authtoken')),
