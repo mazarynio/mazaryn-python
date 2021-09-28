@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'djoser', # package
     'drf_yasg', # package
     'friendship', # package
+    'versatileimagefield', #package
 ]
 
 MIDDLEWARE = [
@@ -200,7 +201,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly']
+        'rest_framework.permissions.AllowAny']
 }
 
 DJOSER = {
