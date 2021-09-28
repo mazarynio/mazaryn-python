@@ -1,9 +1,16 @@
-from django.core import validators
-import posts
 from django.db import models
-from django.core.validators import FileExtensionValidator
-from django.utils import timezone
-import datetime
+from versatileimagefield.fields import VersatileImageField, PPOIField
+
+
+class PostImage(models.Model):
+    '''This model handles a particular image(s) of a post and its full functionality is 
+    backed by a signal - Serving web clients images that are too big probably because
+    loading time will be high likely to lead into unresponsive website'''
+
+    image = VersatileImageField('Image',upload_to='images/',ppoi_field='image_ppoi')
+    image_ppoi = PPOIField()
+
+
 
 class Post(models.Model):
     '''This class defines particulars of a post; post-related details such as author, 
@@ -15,6 +22,7 @@ class Post(models.Model):
         "profiles.Profile", blank=True, related_name='post_likes')
     groups = models.ForeignKey(
         "groups.Group", blank=True, on_delete=models.SET_NULL, null=True, related_name='group_posts')
+    image = models.ManyToManyField(PostImage,blank=True,related_name='posts_images')
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
@@ -42,14 +50,6 @@ class Post(models.Model):
     #     now = timezone.now()
     #     return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
-class PostImage(models.Model):
-    '''This model handles a particular image(s) of a post and its full functionality is 
-    backed by a signal - Serving web clients images that are too big probably because
-    loading time will be high likely to lead into unresponsive website'''
-    
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='post-images',validators=[FileExtensionValidator(['png','jpg','gif','jpeg'])])
-    thumbnail = models.ImageField(upload_to='post_thumbnails',null=True, blank=True)
     
 class Comment(models.Model):
     '''This class defines particulars of a comment; comment-related details such as author, 
