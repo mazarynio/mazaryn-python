@@ -19,7 +19,7 @@ class PostViewSet(FlexFieldsModelViewSet):
 
     serializer_class = PostSerializer
     queryset = Post.objects.all()
-    parser_classes = parsers.MultiPartParser
+    parser_classes = [parsers.MultiPartParser]
     # lookup_field = 'id'
 
     @action(detail=True, methods=["GET"],)

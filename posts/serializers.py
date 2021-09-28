@@ -73,5 +73,6 @@ class PostSerializer(FlexFieldsModelSerializer):
         for comment in comments:
             Comment.objects.create(**comment, post=post)
         
-        instance.image.add(r_data)
+        post_image = PostImage.objects.create(image=r_data['image'])
+        post.image.add(post_image)
         return post
