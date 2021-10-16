@@ -31,5 +31,11 @@ class Group(models.Model):
     def get_group_creator(self):
         return self.created_by.user
 
+    def get_admins(self):
+        return self.admin.all()
+
+    def get_admins_count(self):
+        return self.admin.all().count()
+        
     def __str__(self):
         return f"{self.group_name}"

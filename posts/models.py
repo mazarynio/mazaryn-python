@@ -3,20 +3,21 @@ from versatileimagefield.fields import VersatileImageField, PPOIField
 
 
 class PostImage(models.Model):
-    '''This model handles a particular image(s) of a post and its full functionality is 
-    backed by a signal - Serving web clients images that are too big probably because
-    loading time will be high likely to lead into unresponsive website'''
-
+    '''
+    This model handles a particular image(s) of a post and its full functionality is 
+    backed by a third party package
+    '''
     image = VersatileImageField('Image',upload_to='images/',ppoi_field='image_ppoi')
     image_ppoi = PPOIField()
 
 
 
 class Post(models.Model):
-    '''This class defines particulars of a post; post-related details such as author, 
-    likes count alongside other features represnted by the fields.
-    Ordering of the post listing is from the most recent post downards as defined in the meta class.'''
-    
+    '''
+    This class defines particulars of a post; post-related details such as author, 
+    likes count alongside other features represented by the fields.
+    Ordering of the post listing is from the most recent post downards as defined in the meta class.
+    ''' 
     content = models.TextField() 
     liked = models.ManyToManyField(
         "profiles.Profile", blank=True, related_name='post_likes')
@@ -52,10 +53,10 @@ class Post(models.Model):
 
     
 class Comment(models.Model):
-    '''This class defines particulars of a comment; comment-related details such as author, 
-    likes count alongside other features represnted by the fields.
-    Ordering of the post listing is from the most recent post downards as defined in the meta class.'''
-    
+    '''
+    This class defines particulars of a comment; comment-related details such as author, 
+    likes count alongside other features represented by the fields.
+    '''
     user = models.ForeignKey("profiles.Profile", on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     body = models.TextField(max_length=250)
@@ -80,9 +81,10 @@ LIKE_CHOICES = (
 
 
 class Like(models.Model):
-    '''This class represents the like object, all the related details such as the liker are defined.
-    Ordering of likes follow same suit as in the comments and posts'''
-    
+    '''
+    This class represents the like object, all the related details such as the liker are defined.
+    Ordering of likes follow same suit as in the comments and posts
+    '''
     user = models.ForeignKey("profiles.Profile", on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     value = models.CharField(choices=LIKE_CHOICES, blank=True, max_length=8)

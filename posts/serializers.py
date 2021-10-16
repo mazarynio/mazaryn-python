@@ -4,10 +4,10 @@ from versatileimagefield.serializers import VersatileImageFieldSerializer
 from rest_flex_fields import FlexFieldsModelSerializer
 
 class CommentSerializer(serializers.ModelSerializer):
-    '''Serializes comments.'''
-    
-    id = serializers.IntegerField(required=False)
-    
+    '''
+    Serializes comments.
+    '''
+    id = serializers.IntegerField(required=False) 
     class Meta:
         model = Comment
         fields = [
@@ -32,10 +32,10 @@ class PostImageSerializer(FlexFieldsModelSerializer):
 
 
 class PostSerializer(FlexFieldsModelSerializer):
-    '''Posts serializer 'converts'/serializes posts,serving them to and from the database.
-    On http post request, create method which actually saves the data to the database 
-    explicitly handles the comments - comments aren't a field in posts model.'''
-    
+    '''
+    Posts serializer 'converts'/serializes posts,serving them to and from the database.
+    Explicitly handles the comments and images.
+    '''
     image = PostImageSerializer(many=True, required=False)
     comments = CommentSerializer(many=True, required=False)
     class Meta:

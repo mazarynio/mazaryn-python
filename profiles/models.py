@@ -10,8 +10,10 @@ from django.core import validators
 
 
 class UserManager(BaseUserManager):
-    '''This manager class inherits its core functionality
-    from django's BaseUserManager to extend it to User class'''
+    '''
+    This manager class inherits its core functionality
+    from django's BaseUserManager to extend it to User class
+    '''
     use_in_migrations = True
 
     # Due to the conflicting syntax the naming takes underscore to differentiate them
@@ -44,9 +46,11 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-    '''Custom User model for handling details required for Registration, Login.
+    '''
+    Custom User model for handling details required for Registration, Login.
     Besides this model sets attributes such as active and superuser statuses.
-    This model defaults email as a required field.'''
+    This model defaults email as a required field.
+    '''
     username = None
     email = models.EmailField('email address', unique=True)
     USERNAME_FIELD = 'email'
@@ -56,35 +60,19 @@ class User(AbstractUser):
 
 
 class ProfileManager(models.Manager):
-    '''Extends the profile class default **Objects** manager by appending subsequent methods.'''
+    '''
+    Extends the profile class.
+    '''
 
     def get_all_profiles(self, myself):
         '''Lists all profiles to the user excluding the logged in user instance from the list.'''
         return Profile.objects.all().exclude(user=myself)
 
-    # def get_all_profiles_to_invite(self, myself):
-    #     '''Returns all profiles eligible for relationship to be initiated, the method excludes the following 
-    #     from the list: 
-    #     1.Instance of the current user logged in
-    #     2.Current friends
-    #     3.Instances where the status of the relationship is **-sent** (awaiting for acceptance)'''
-    #     profiles = Profile.objects.all().exclude(user=myself)
-    #     profile = Profile.objects.get(user=myself)
-    #     qs = Relationship.objects.filter(
-    #         Q(sender=profile) | Q(receiver=profile))
-    #     accepted_invitations = []
-    #     for relationship in qs:
-    #         if relationship.status == 'accepted':
-    #             accepted_invitations.append(relationship.receiver)
-    #             accepted_invitations.append(relationship.sender)
-
-    #     return [
-    #         profile for profile in profiles if profile not in accepted_invitations]
-
 
 def upload_avatar(instance, filename):
-    '''Handles avatar upload.
-    This is function handles the user uploaded avatars '''
+    '''
+    Handles avatar upload.
+    This is function handles the user uploaded avatars.'''
     path = 'avatars'
     ext = filename.split('.')[-1]
     filename = '{}.{}'.format(instance.user.username, ext)
@@ -92,7 +80,9 @@ def upload_avatar(instance, filename):
 
 
 class Profile(models.Model):
-    '''Extends the default **User** model '''
+    '''
+    Extends the default ```User``` model.
+    '''
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
@@ -149,11 +139,13 @@ class Profile(models.Model):
         self.intial_last_name = self.last_name
 
     def save(self, *args, **kwargs):
-        '''This function overides the default save() method available for models.
+        '''
+        This function overides the default save() method available for models.
         This function generates the slug based on:
-        1. If first and last names are provided then slug will be generated from them.
-        2. Does check on the availability of a slug and ensures that the unique slug is not
-        changed each and everytime the profile is updated.'''
+        - 1 If first and last names are provided then slug will be generated from them.
+        - 2 Does check on the availability of a slug and ensures that the unique slug is not
+        changed each and everytime the profile is updated.
+        '''
         ex = False
         to_slug = self.slug
         if self.first_name != self.intial_first_name or self.last_name != self.intial_last_name or self.slug == "":

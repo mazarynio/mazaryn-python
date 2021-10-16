@@ -13,7 +13,9 @@ from django.db.models import Q
 class FriendshipManager(FriendshipBaseManager):
 
     def friends(self, user):
-        """ Return a list of all friends """
+        """
+        Return a list of all friends.
+        """
         key = cache_key("friends", user.pk)
         friends = cache.get(key)
 
@@ -29,7 +31,9 @@ class FriendshipManager(FriendshipBaseManager):
         return friends
 
     def are_friends(self, user1, user2):
-        """ Are these two users friends? """
+        """
+        Are these two users friends?
+        """
         friends1 = cache.get(cache_key("friends", user1.pk))
         friends2 = cache.get(cache_key("friends", user2.pk))
         if friends1 and user2 in friends1:
@@ -44,7 +48,9 @@ class FriendshipManager(FriendshipBaseManager):
                 return False
 
     def remove_friend(self, from_user, to_user):
-        """ Destroy a friendship relationship """
+        """
+        Destroy a friendship relationship.
+        """
         try:
             qs = Friend.objects.filter(Q(to_user=to_user, from_user=from_user) | Q(to_user=from_user, from_user=to_user))
             distinct_qs = qs.distinct().all()
@@ -70,8 +76,9 @@ class Friend(FriendBaseModel):
 
 
 def accept(self):
-    """ Accept this friendship request """
-    print("hyrgfyrggy")
+    """
+    Accept this friendship request
+    """
     if Friend.objects.filter(from_user=self.from_user, to_user=self.to_user).exists():
         Friend.objects.filter(from_user=self.from_user, to_user=self.to_user).update(is_active=True)
     else:

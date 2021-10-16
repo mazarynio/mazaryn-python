@@ -1,5 +1,4 @@
 import uuid
-from profiles import models
 
 
 def get_random_code():

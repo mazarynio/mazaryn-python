@@ -18,8 +18,7 @@ def post_save_create_profile(sender, instance, created, **kwargs):
 
 @receiver(pre_save, sender=User)
 def set_new_user_active(sender, instance, created=True, **kwargs):
-    '''Returns boolean field True  for each instance of a new user 
-    to facilitate authentication and login'''
+    '''Returns boolean field True  for each instance of a new user to facilitate authentication and login'''
     if created:
         instance.is_active = True
 

@@ -36,7 +36,7 @@ urlpatterns = [
    path('ping', ping),
    path('groups/', include("groups.urls")),
    path('posts/', include("posts.urls")),
-   path('auth', include('djoser.urls')),
+   path('auth/', include('djoser.urls')),
    url(r'^auth-token/', include('djoser.urls.authtoken')),
    path('friends/', include('friends.urls')),
    path('mobile-api/auth/',authtoken_views.obtain_auth_token,name="mobile_token"),# mobile token authentication endpoint  

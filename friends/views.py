@@ -1,15 +1,15 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from rest_framework import status
-from friends.models import Friend, Follow, Block, FriendshipRequest
-from .serializers import BlockSerializer, FollowSerializer, FriendSerializer
+from .models import * 
+from .serializers import *
 from profiles.models import Profile
 
 ###### --------Remove, list friends--------########
 
 class FriendsList(generics.ListAPIView):
-    '''List friends to the logged-in user instance'''
-    
+    '''
+    List friends to the logged-in user instance
+    '''
     serializer_class = FriendSerializer 
     permission_classes = (permissions.IsAuthenticated,)
     def get_queryset(self):
@@ -90,16 +90,18 @@ class RejectFriendRequest(generics.DestroyAPIView):
         res.reject()
         return Response({"reject": res, "message": None}, status=status.HTTP_204_NO_CONTENT)
 class FriendShipRequests(generics.ListCreateAPIView):
-    '''Lists friend requests received by a user '''
-    
+    '''
+    Lists friend requests received by a user.
+    '''
     serializer_class = FriendSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
     def get_queryset(self):
         return Friend.objects.unrejected_requests(user=self.request.user)
 class RejectedFriendShipRequests(generics.ListAPIView):
-    '''Lists friend requests received by a user '''
-    
+    '''
+    Lists friend requests received by a user.
+    '''
     serializer_class = FriendSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
@@ -125,16 +127,18 @@ class Follow(generics.CreateAPIView):
         res = Follow.objects.add_follower(self.request.user, profile.user)
         return Response({"follow": res, "message": None}, status=status.HTTP_201_CREATED)
 class FollowersView(generics.ListAPIView):
-    '''Lists followers to the logged-in user instance'''
-   
+    '''
+    Lists followers to the logged-in user instance.
+    '''
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
     def get_queryset(self):
         return Follow.objects.followers(self.request.user)
 class FollowingView(generics.ListCreateAPIView):
-    '''Lists potential users to be followed by the logged-in user instance'''
-    
+    '''
+    Lists potential users to be followed by the logged-in user instance.
+    '''
     serializer_class = FollowSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
@@ -177,16 +181,18 @@ class Unblock(generics.DestroyAPIView):
         res = Block.objects.remove_block(self.request.user, profile.user)
         return Response({"unblock": res, "message": None}, status=status.HTTP_204_NO_CONTENT)
 class BlockingView(generics.ListCreateAPIView):
-    '''Lists potential users to be blocked by the logged-in user instance'''
-    
+    '''
+    Lists potential users to be blocked by the logged-in user instance.
+    '''
     serializer_class = BlockSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
     def get_queryset(self):
         return Block.objects.blocking(self.request.user)
 class BlockedView(generics.ListAPIView):
-    '''Lists all blocked users to the logged-in user instance'''
-    
+    '''
+    Lists all blocked users to the logged-in user instance.
+    ''' 
     serializer_class = BlockSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
