@@ -35,7 +35,7 @@ urlpatterns = [
    path('admin/', admin.site.urls),
    path('ping', ping),
    path('groups/', include("groups.urls")),
-   path('posts/', include("posts.urls")),
+   path('group/posts/', include("posts.urls")),
    path('auth/', include('djoser.urls')),
    url(r'^auth-token/', include('djoser.urls.authtoken')),
    path('friends/', include('friends.urls')),
