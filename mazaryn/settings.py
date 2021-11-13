@@ -71,7 +71,7 @@ MIDDLEWARE = [
 SITE_ID = 1
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
+    "http://app.mazaryn.xyz/"
 ]
 
 ROOT_URLCONF = 'mazaryn.urls'
