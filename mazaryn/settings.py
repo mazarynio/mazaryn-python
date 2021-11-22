@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'friends',
     'posts',
     'groups',
-
+    
     'rest_framework',# package
     'rest_framework.authtoken', # package
     'djoser', # package
@@ -71,7 +71,9 @@ MIDDLEWARE = [
 SITE_ID = 1
 
 CORS_ALLOWED_ORIGINS = [
-    "http://app.mazaryn.xyz/"
+    "http://app.mazaryn.xyz",
+    "https://app.mazaryn.xyz",
+    "http://localhost:",
 ]
 
 ROOT_URLCONF = 'mazaryn.urls'
