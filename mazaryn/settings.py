@@ -76,6 +76,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:",
 ]
 
+CORS_ORIGIN_WHITELIST = [
+    "https://localhost:",
+    "http://app.mazaryn.xyz",
+    "https://app.mazaryn.xyz",
+]
+
 ROOT_URLCONF = 'mazaryn.urls'
 
 
