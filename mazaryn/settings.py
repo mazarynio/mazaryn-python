@@ -75,13 +75,12 @@ CORS_ALLOWED_ORIGINS = [
     "https://app.mazaryn.xyz",
     "http://localhost:",
     "http://localhost",
-    "27.0.0.1",
+    
 ]
 
 CORS_ORIGIN_WHITELIST = [
     "https://localhost:",
     "http://localhost",
-    "127.0.0.1",
     "http://app.mazaryn.xyz",
     "https://app.mazaryn.xyz",
 ]
