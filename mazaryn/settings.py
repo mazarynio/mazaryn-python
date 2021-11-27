@@ -70,20 +70,13 @@ MIDDLEWARE = [
 
 SITE_ID = 1
 
-CORS_ALLOWED_ORIGINS = [
-    "http://app.mazaryn.xyz",
-    "https://app.mazaryn.xyz",
-    "http://localhost:",
-    "http://localhost",
-    
+CORS_ALLOWED_ORIGIN_REGEXES = [
+r'^http:\/\/localhost:\d+$',
+r'^https:\/\/app.mazaryn.xyz$',
+r'^http:\/\/app.mazaryn.xyz$',
+r'^http:\/\/127.0.0.1:\d+$',
 ]
 
-CORS_ORIGIN_WHITELIST = [
-    "https://localhost:",
-    "http://localhost",
-    "http://app.mazaryn.xyz",
-    "https://app.mazaryn.xyz",
-]
 
 ROOT_URLCONF = 'mazaryn.urls'
 
