@@ -72,8 +72,8 @@ SITE_ID = 1
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
 r'^http:\/\/localhost:\d+$',
-r'^https:\/\/app.mazaryn.xyz$',
-r'^http:\/\/app.mazaryn.xyz$',
+r'^https:\/\/app.mazaryn.xyz',
+r'^http:\/\/app.mazaryn.xyz',
 r'^http:\/\/127.0.0.1:\d+$',
 ]
 
@@ -137,8 +137,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DATABASE_NAME"),
+        'ENGINE': 'django.db.backends.sqlite3',#postgresql_psycopg2',
+        'NAME': 'marzaryn',#os.environ.get("DATABASE_NAME"),
         'USER': os.environ.get("DATABASE_USER"),
         'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
         'HOST': os.environ.get("DATABASE_HOST"),
