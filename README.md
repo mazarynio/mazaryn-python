@@ -63,3 +63,9 @@ DATABASE_PORT
 
 5. Migrate models:
 `python manage.py migrate`
+
+### For mac users, please make the following adjustments before installing the dependencies
+
+1. Install `Rust` (use `brew`)
+2. Install `libmagic` (use `brew`)
+3. Update `pip` to the latest version
