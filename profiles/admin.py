@@ -1,6 +1,10 @@
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from .models import User, Profile
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 @admin.register(User)
@@ -48,5 +52,21 @@ class AdminUser(UserAdmin):
 
 
 @admin.register(Profile)
-class ProfileModel(admin.ModelAdmin):
-    list_filter = ('slug', 'created', 'first_name')
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ("first_name", "slug")
+    list_filter = ("slug", "created", "first_name")
+    search_fields = ("first_name",)
+    prepopulated_fields = {"slug": ("first_name",)}
+    # autocomplete_fields = ("slug",)
+    
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return self.readonly_fields
+        
+        return list(self.readonly_fields) + ["slug", "first_name"]
+    
+    def get_prepopulated_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return self.prepopulated_fields
+        else:
+            return {}
