@@ -84,7 +84,7 @@ class Profile(models.Model):
     '''
     Extends the default ```User``` model.
     '''
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name= 'profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
     phone_number = models.CharField(validators=[validators.RegexValidator(
@@ -102,14 +102,14 @@ class Profile(models.Model):
 
     objects = ProfileManager()
 
-    ban_status = models.ForeignKey(BanStatus, on_delete= models.CASCADE)
+    ban_status = models.ManyToManyField(BanStatus, on_delete=models.CASCADE)
 
     def get_friends(self):
-        '''This method queries the database of all friends of the current logged in user.'''
+        """This method queries the database of all friends of the current logged in user."""
         return self.friends.all()
 
     def get_friends_no(self):
-        '''Returns the number of the friends total.'''
+        """Returns the number of the friends total."""
         return self.friends.all().count()
 
     def get_posts_no(self):
