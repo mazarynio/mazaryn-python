@@ -6,7 +6,6 @@ from django.db.models import Q
 
 """
     Please import models from here instead importing directly form friendship app. 
-
 """
 
 

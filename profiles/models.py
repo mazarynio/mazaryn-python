@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from django.db.models import Q
 from django.db import models
 from groups.models import Group
+from groups.models import BanStatus
 import profiles
 import os
 from django.core import validators
@@ -83,7 +84,7 @@ class Profile(models.Model):
     '''
     Extends the default ```User``` model.
     '''
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name= 'profile')
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
     phone_number = models.CharField(validators=[validators.RegexValidator(
@@ -100,6 +101,8 @@ class Profile(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
 
     objects = ProfileManager()
+
+    ban_status = models.ForeignKey(BanStatus, on_delete= models.CASCADE)
 
     def get_friends(self):
         '''This method queries the database of all friends of the current logged in user.'''
