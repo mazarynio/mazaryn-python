@@ -50,6 +50,6 @@ class BanStatus(models.Model):
     """
 
     """
-    group_name = models.models.OneToOneField(Group, on_delete=models.CASCADE)
-    ban_status = models.models.BooleanField(default=False)
+    group_name = models.OneToOneField(Group, on_delete=models.CASCADE)
+    ban_status = models.BooleanField(default=False)
     ban_date = models.DateTimeField(auto_now=True)

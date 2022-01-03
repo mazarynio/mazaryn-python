@@ -99,10 +99,11 @@ class Profile(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
+    ban_status = models.ManyToManyField(BanStatus,)
 
     objects = ProfileManager()
 
-    ban_status = models.ManyToManyField(BanStatus, on_delete=models.CASCADE)
+    
 
     def get_friends(self):
         """This method queries the database of all friends of the current logged in user."""
