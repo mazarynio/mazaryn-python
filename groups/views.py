@@ -6,7 +6,7 @@ from .models import Group, BanStatus
 from profiles.models import Profile
 
 
-def ban(self, request, *args, **kwargs):
+def ban(request, *args, **kwargs):
 
     group_name = request.data.get("group_name")
     get_group = Group.objects.get(group_name=group_name)
