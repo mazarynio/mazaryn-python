@@ -60,7 +60,6 @@ DATABASE_HOST
 DATABASE_PORT
 ```
 
-
 5. Migrate models:
 `python manage.py migrate`
 
