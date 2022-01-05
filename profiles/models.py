@@ -102,7 +102,7 @@ class Profile(models.Model):
 
     objects = ProfileManager()
 
-    ban_status = models.ManyToManyField(BanStatus, on_delete=models.CASCADE)
+    ban_status = models.ManyToManyField(BanStatus)
 
     def get_friends(self):
         """This method queries the database of all friends of the current logged in user."""
