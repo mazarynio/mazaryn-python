@@ -203,6 +203,7 @@ MEDIA_URL = '/media/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny']
@@ -216,6 +217,9 @@ DJOSER = {
     'SERIALIZERS': {},
 }
 
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT','Bearer',),
+}
 
 # Logs runtime events
 LOGGING = {
