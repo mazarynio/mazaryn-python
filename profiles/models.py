@@ -4,9 +4,18 @@ from django.template.defaultfilters import slugify
 from django.db.models import Q
 from django.db import models
 from groups.models import Group
+from groups.models import BanStatus
 import profiles
 import os
 from django.core import validators
+from cassandra.cluster import Cluster 
+from cassandra.query import dict_factory 
+from cassandra import ReadTimeout
+
+def get_db_session():
+    cluster = Cluster(['172.17.0.2'], port=9042)
+    session = cluster.connect('user')
+    return session
 
 
 class UserManager(BaseUserManager):
@@ -18,9 +27,14 @@ class UserManager(BaseUserManager):
 
     # Due to the conflicting syntax the naming takes underscore to differentiate them
     def _create_user(self, email, password, **extra_fields):
+        session = get_db_session()
+        query_parameters = request.args
+        username = query_parameters.get("username")
+        password = query_parameters.get("password")
         if not email:
             raise ValueError('Email must be set')
-        email = self.normalize_email(email)
+        email = query_parameters.get("email")
+        url = query_parameters.get("url")
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -83,7 +97,7 @@ class Profile(models.Model):
     '''
     Extends the default ```User``` model.
     '''
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
     phone_number = models.CharField(validators=[validators.RegexValidator(
@@ -94,19 +108,25 @@ class Profile(models.Model):
     avatar = models.ImageField(default='avatar.png', upload_to=upload_avatar)
     friends = models.ManyToManyField(User, blank=True, related_name='ffriends')
     groups = models.ManyToManyField(Group, blank=True)
+    session = get_db_session()
 
     slug = models.SlugField(unique=True, blank=True)
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
+    ban_status = models.ManyToManyField(BanStatus,)
 
     objects = ProfileManager()
 
+
+    ban_status = models.ManyToManyField(BanStatus)
+
+
     def get_friends(self):
-        '''This method queries the database of all friends of the current logged in user.'''
+        """This method queries the database of all friends of the current logged in user."""
         return self.friends.all()
 
     def get_friends_no(self):
-        '''Returns the number of the friends total.'''
+        """Returns the number of the friends total."""
         return self.friends.all().count()
 
     def get_posts_no(self):
