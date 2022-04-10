@@ -1,5 +1,8 @@
 from django.db import models
 from versatileimagefield.fields import VersatileImageField, PPOIField
+import datetime
+from django.utils import timezone
+
 
 
 class PostImage(models.Model):
@@ -18,7 +21,7 @@ class Post(models.Model):
     likes count alongside other features represented by the fields.
     Ordering of the post listing is from the most recent post downards as defined in the meta class.
     ''' 
-    content = models.TextField() 
+    content = models.CharField(max_length=10000) 
     liked = models.ManyToManyField(
         "profiles.Profile", blank=True, related_name='post_likes')
     groups = models.ForeignKey(
@@ -47,9 +50,9 @@ class Post(models.Model):
     def comments(self):
         return self.comment_set.all()
     
-    # def was_published_recently(self):
-    #     now = timezone.now()
-    #     return now - datetime.timedelta(days=1) <= self.pub_date <= now
+    def was_published_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
     
 class Comment(models.Model):
