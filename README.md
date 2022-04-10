@@ -66,5 +66,5 @@ DATABASE_PORT
 ### For mac users, please make the following adjustments before installing the dependencies
 
 1. Install `Rust` (use `brew`)
-2. Install `libmagic` (use `brew`)
+2. Install `libmagic` (use` pip install python-magic-bin==0.4.14`) 
 3. Update `pip` to the latest version
